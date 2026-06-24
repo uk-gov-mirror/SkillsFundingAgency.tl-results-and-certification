@@ -42,7 +42,9 @@
                         @string.Format(ManageCoreResult.Core_Component, @Model.PathwayDisplayName)
                     </div>
                     <span sfa-validation-for="SelectedGradeCode"></span>
-                    @foreach (var grade in Model?.Grades?.Select((value, i) => (value, i)))
+                    @foreach (var grade in Model?.Grades?
+                            .Where(g => !string.Equals(g.Code, Model.CoreGradeCode, StringComparison.InvariantCultureIgnoreCase))
+                            .Select((value, i) => (value, i)))
                     {
                         if(!string.IsNullOrWhiteSpace(grade.value.Code) && grade.value.Code.Equals(Constants.NotReceived, StringComparison.InvariantCultureIgnoreCase)) {
                             <div class="govuk-radios__divider">@ManageCoreResult.Or_Text</div>
