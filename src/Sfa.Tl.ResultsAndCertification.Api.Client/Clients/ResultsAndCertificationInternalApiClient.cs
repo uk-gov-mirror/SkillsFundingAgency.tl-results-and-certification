@@ -43,6 +43,7 @@ namespace Sfa.Tl.ResultsAndCertification.Api.Client.Clients
             _httpClient = httpClient;
             _httpClient.DefaultRequestHeaders.Accept.Clear();
             _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            _httpClient.Timeout = TimeSpan.FromMinutes(20);
             _internalApiUri = configuration.ResultsAndCertificationInternalApiSettings.Uri.TrimEnd('/');
             _httpClient.BaseAddress = new Uri(_internalApiUri);
         }
