@@ -525,6 +525,9 @@
                     },
                     "principalId": {
                         "value": "[parameters('microsoftAppServicePrincipalId')]"
+                    },
+                     "principalType":{
+                        "value": "ServicePrincipal"
                     }
                 }
             },
