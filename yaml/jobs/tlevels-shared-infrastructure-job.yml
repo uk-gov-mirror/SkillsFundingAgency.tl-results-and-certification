@@ -42,7 +42,6 @@ jobs:
                   -keyVaultFullAccessObjectIds "$(keyVaultFullAccessObjectIds)"
                   -sqlFirewallIpAddressesPredefined $(sqlFirewallIpAddresses)
                   -enableReplica $(enableReplica)
-                  -enableIntTestDb $(enableIntTestDb)
                   -isStorageSecondaryKeyInUse "$(isStorageSecondaryKeyInUse)"
                   -environmentPrefix "$(environmentPrefix)"'
                 tags: $(Tags)
