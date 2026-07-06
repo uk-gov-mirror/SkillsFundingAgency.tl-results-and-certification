@@ -147,9 +147,15 @@ namespace Sfa.Tl.ResultsAndCertification.Application.Services.ResultSlipsBuilder
                 int upperRightX = 250;
                 int upperRightY = 825;
 
-                using (FileStream imageStream = new FileStream(Common.Utils.Image.GetResultSlipHeaderLogo(), FileMode.Open))
+                string imagePath = Common.Utils.Image.GetResultSlipHeaderLogo();
+
+                using (MemoryStream memoryStream = new MemoryStream())
                 {
-                    _page.Resources.Images.Add(imageStream);
+                    CopyFileToStream(imagePath, memoryStream);
+
+                    // Reset position for Aspose to read from the beginning
+                    memoryStream.Position = 0;
+                    _page.Resources.Images.Add(memoryStream);
 
                     _page.Contents.Add(new Aspose.Pdf.Operators.GSave());
 
@@ -162,7 +168,14 @@ namespace Sfa.Tl.ResultsAndCertification.Application.Services.ResultSlipsBuilder
                     _page.Contents.Add(new Aspose.Pdf.Operators.Do(ximage.Name));
                     _page.Contents.Add(new Aspose.Pdf.Operators.GRestore());
                 }
+
                 return this;
+            }
+
+            private static void CopyFileToStream(string imagePath, Stream targetStream)
+            {
+                using var fileStream = File.OpenRead(imagePath);
+                fileStream.CopyTo(targetStream);
             }
         }
     }
