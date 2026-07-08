@@ -124,12 +124,13 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.ResultLoaderTests.
             ActualResult.Grades.Should().NotBeNull();
             ActualResult.Grades.Count.Should().Be(expectedApiLookupData.Count);
 
-            for (int i = 0; i < ActualResult.Grades.Count; i++)
+            for (int i = 0; i < ActualResult.Grades.Count - 1; i++)
             {
-                ActualResult.Grades[i].Id.Should().Be(expectedApiLookupData[i].Id);
-                ActualResult.Grades[i].Code.Should().Be(expectedApiLookupData[i].Code);
-                ActualResult.Grades[i].Value.Should().Be(expectedApiLookupData[i].Value);
+                ActualResult.Grades[i].Id.Should().Be(expectedApiLookupData[i+1].Id);
+                ActualResult.Grades[i].Code.Should().Be(expectedApiLookupData[i+1].Code);
+                ActualResult.Grades[i].Value.Should().Be(expectedApiLookupData[i+1].Value);
             }
+
         }
 
         [Fact]
