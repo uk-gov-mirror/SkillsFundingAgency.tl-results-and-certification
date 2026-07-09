@@ -45,6 +45,7 @@ namespace Sfa.Tl.ResultsAndCertification.Api.Client.Clients
             _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             _internalApiUri = configuration.ResultsAndCertificationInternalApiSettings.Uri.TrimEnd('/');
             _httpClient.BaseAddress = new Uri(_internalApiUri);
+            _httpClient.Timeout = TimeSpan.FromMinutes(20);
         }
 
         public async Task<IEnumerable<AwardingOrganisationPathwayStatus>> GetAllTlevelsByUkprnAsync(long ukprn)
