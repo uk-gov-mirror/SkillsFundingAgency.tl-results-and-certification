@@ -131,7 +131,9 @@ namespace Sfa.Tl.ResultsAndCertification.Web.Loader
                 var currentGradeCode = assessment.Result?.GradeCode;
 
                 if (!string.IsNullOrWhiteSpace(currentGradeCode))
-                    grades = grades.Where(g => !g.Code.Equals(currentGradeCode, StringComparison.InvariantCultureIgnoreCase)).ToList();
+                {
+                    grades.Remove(grades.Where(t => t.Code == currentGradeCode).FirstOrDefault());
+                }
 
                 grades.Insert(grades.Count, new LookupData { Code = Constants.NotReceived, Value = Content.Result.ManageCoreResult.Option_Remove_Result });
             }
@@ -199,8 +201,9 @@ namespace Sfa.Tl.ResultsAndCertification.Web.Loader
                 var currentGradeCode = assessment.Result?.GradeCode;
 
                 if (!string.IsNullOrWhiteSpace(currentGradeCode))
-                    grades = grades.Where(g => !g.Code.Equals(currentGradeCode, StringComparison.InvariantCultureIgnoreCase)).ToList();
-
+                {
+                    grades.Remove(grades.Where(t => t.Code == currentGradeCode).FirstOrDefault());
+                }
                 grades.Insert(grades.Count, new LookupData { Code = Constants.NotReceived, Value = Content.Result.ManageSpecialismResult.Option_Remove_Result });
 
             }
