@@ -162,4 +162,8 @@
   <data name="Validation_Lastname_Required" xml:space="preserve">
     <value>Enter last name</value>
   </data>
+	<data name="Validation_Fullname_Max_Length" xml:space="preserve">
+    <value>First name and last name must be 40 characters or fewer when added together</value>
+  </data>
+	
 </root>

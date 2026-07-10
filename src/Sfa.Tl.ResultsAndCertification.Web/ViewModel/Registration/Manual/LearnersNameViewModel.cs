@@ -16,6 +16,10 @@ namespace Sfa.Tl.ResultsAndCertification.Web.ViewModel.Registration.Manual
         [MaxLength(100, ErrorMessageResourceType = typeof(ErrorResource.LearnersName), ErrorMessageResourceName = "Validation_Lastname_Max_Length")]
         [RegularExpression(Constants.LearnersNameRegex, ErrorMessageResourceType = typeof(ErrorResource.LearnersName), ErrorMessageResourceName = "Validation_Lastname_Cannot_Contain_Integers_Or_Special_Characters")]
         public string Lastname { get; set; }
+
+        [MaxLength(40, ErrorMessageResourceType = typeof(ErrorResource.LearnersName), ErrorMessageResourceName = "Validation_Fullname_Max_Length")]
+        public string Fullname => $"{Firstname} {Lastname}";
+
         public bool IsChangeMode { get; set; }
         public virtual BackLinkModel BackLink => new BackLinkModel { RouteName = IsChangeMode ? RouteConstants.AddRegistrationCheckAndSubmit : RouteConstants.AddRegistrationUln };
     }
