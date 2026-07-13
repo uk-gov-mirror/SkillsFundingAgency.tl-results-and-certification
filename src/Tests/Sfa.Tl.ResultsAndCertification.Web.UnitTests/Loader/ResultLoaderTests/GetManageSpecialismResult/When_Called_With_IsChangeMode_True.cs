@@ -20,8 +20,9 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.ResultLoaderTests.
             {
                 new LookupData { Id = 1, Code = "C1", Value = "V1" },
                 new LookupData { Id = 2, Code = "C2", Value = "V2" },
-                new LookupData { Code = "NR", Value = "This learner's grade has not been received" },
+                new LookupData { Code = "NR", Value = "This learner's grade has not been received" }
             };
+
 
             InternalApiClient.GetLookupDataAsync(LookupCategory.SpecialismComponentGrade).Returns(expectedApiLookupData);
 
@@ -130,6 +131,7 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.ResultLoaderTests.
                 ActualResult.Grades[i].Code.Should().Be(expectedApiLookupData[i].Code);
                 ActualResult.Grades[i].Value.Should().Be(expectedApiLookupData[i].Value);
             }
+
         }
 
         [Fact]

@@ -19,7 +19,8 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.ResultLoaderTests.
             expectedApiLookupData = new List<LookupData>
             {
                 new LookupData { Id = 1, Code = "C1", Value = "V1" },
-                new LookupData { Id = 2, Code = "C2", Value = "V2" }
+                new LookupData { Id = 2, Code = "C2", Value = "V2" },
+                new LookupData { Id = 3, Code = "C3", Value = "V3" }
             };
 
             InternalApiClient.GetLookupDataAsync(LookupCategory.PathwayComponentGrade).Returns(expectedApiLookupData);
@@ -59,8 +60,9 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.ResultLoaderTests.
                             LastUpdatedOn = DateTime.UtcNow,
                             Result = new Result
                             {
-                                Id = 1,
+                                Id = 3,
                                 Grade = "A",
+                                GradeCode = "C3",
                                 PrsStatus = null,
                                 LastUpdatedBy = "System",
                                 LastUpdatedOn = DateTime.UtcNow
