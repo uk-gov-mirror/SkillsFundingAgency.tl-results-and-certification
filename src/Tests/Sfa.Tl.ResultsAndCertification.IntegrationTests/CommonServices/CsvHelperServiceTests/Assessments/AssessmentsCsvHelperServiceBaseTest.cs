@@ -34,9 +34,8 @@ namespace Sfa.Tl.ResultsAndCertification.IntegrationTests.CommonServices.CsvHelp
 
         public async Task WhenAsync()
         {
-            ValidatorOptions.Global.DisplayNameResolver = (type, memberInfo, expression) => {
-                return memberInfo.GetCustomAttribute<System.ComponentModel.DataAnnotations.DisplayAttribute>()?.GetName();
-            };
+            ValidatorOptions.Global.DisplayNameResolver = (type, memberInfo, expression) =>
+                memberInfo?.GetCustomAttribute<System.ComponentModel.DataAnnotations.DisplayAttribute>()?.GetName();
 
             await using (var stream = File.Open(FilePath, FileMode.Open))
             {

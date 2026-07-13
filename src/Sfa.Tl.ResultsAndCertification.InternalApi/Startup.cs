@@ -136,9 +136,7 @@ namespace Sfa.Tl.ResultsAndCertification.InternalApi
             RegisterApplicationServices(services);
 
             ValidatorOptions.Global.DisplayNameResolver = (type, memberInfo, expression) =>
-            {
-                return memberInfo.GetCustomAttribute<System.ComponentModel.DataAnnotations.DisplayAttribute>()?.GetName();
-            };
+                memberInfo?.GetCustomAttribute<System.ComponentModel.DataAnnotations.DisplayAttribute>()?.GetName();
         }
 
         private void RegisterApplicationServices(IServiceCollection services)
