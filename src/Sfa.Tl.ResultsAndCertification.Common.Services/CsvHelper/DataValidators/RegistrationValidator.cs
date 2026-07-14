@@ -32,12 +32,11 @@ namespace Sfa.Tl.ResultsAndCertification.Common.Services.CsvHelper.DataValidator
                 .MaxStringLength(100)
                 .ValidName();
 
-            RuleFor(r => $"{r.FirstName} {r.LastName}")
+            // Fullname
+            RuleFor(r => r.FullName)
                 .Cascade(CascadeMode.Stop)
                 .MaxStringLength(40)
-                .WithMessage(ValidationMessages.LearnerFullNameMaxLength)
-                .WithName("Fullname");
-
+                .WithMessage(ValidationMessages.LearnerFullNameMaxLength);
 
             // DateofBirth
             RuleFor(r => r.DateOfBirth)

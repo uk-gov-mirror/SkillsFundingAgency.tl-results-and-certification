@@ -18,6 +18,9 @@ namespace Sfa.Tl.ResultsAndCertification.Models.Registration.BulkProcess
         [Display(Name = RegistrationFluentHeader.LastName)]
         public string LastName { get; set; }
 
+        [Display(Name = "Full name")]
+        public string FullName => $"{FirstName} {LastName}";
+
         [Column(RegistrationHeader.DateOfBirth, Order = 3)]
         [Display(Name = RegistrationFluentHeader.DateOfBirth)]
         public string DateOfBirth { get; set; }

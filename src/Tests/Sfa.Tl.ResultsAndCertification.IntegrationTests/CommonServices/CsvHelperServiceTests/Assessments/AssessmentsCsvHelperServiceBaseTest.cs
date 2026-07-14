@@ -1,5 +1,4 @@
-﻿using FluentAssertions.Equivalency;
-using FluentValidation;
+﻿using FluentValidation;
 using Microsoft.Extensions.Logging;
 using Sfa.Tl.ResultsAndCertification.Common.Services.CsvHelper.DataParser.Interfaces;
 using Sfa.Tl.ResultsAndCertification.Common.Services.CsvHelper.Service;
