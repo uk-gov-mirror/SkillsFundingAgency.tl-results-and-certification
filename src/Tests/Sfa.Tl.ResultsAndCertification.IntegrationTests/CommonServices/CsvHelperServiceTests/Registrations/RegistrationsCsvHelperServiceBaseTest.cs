@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 namespace Sfa.Tl.ResultsAndCertification.IntegrationTests.CommonServices.CsvHelperServiceTests.Registrations
 {
     public abstract class RegistrationsCsvHelperServiceBaseTest : BaseTest
-    {  
+    {
         protected ILogger<CsvHelperService<RegistrationCsvRecordRequest, CsvResponseModel<RegistrationCsvRecordResponse>, RegistrationCsvRecordResponse>> Logger;
         protected ICsvHelperService<RegistrationCsvRecordRequest, CsvResponseModel<RegistrationCsvRecordResponse>, RegistrationCsvRecordResponse> Service;
         protected IValidator<RegistrationCsvRecordRequest> Validator;
@@ -35,7 +35,8 @@ namespace Sfa.Tl.ResultsAndCertification.IntegrationTests.CommonServices.CsvHelp
 
         public async Task WhenAsync()
         {
-            ValidatorOptions.Global.DisplayNameResolver = (type, memberInfo, expression) => {
+            ValidatorOptions.Global.DisplayNameResolver = (type, memberInfo, expression) =>
+            {
                 return memberInfo.GetCustomAttribute<System.ComponentModel.DataAnnotations.DisplayAttribute>()?.GetName();
             };
 

@@ -34,7 +34,8 @@ namespace Sfa.Tl.ResultsAndCertification.IntegrationTests.CommonServices.CsvHelp
 
         public async Task WhenAsync()
         {
-            ValidatorOptions.Global.DisplayNameResolver = (type, memberInfo, expression) => {
+            ValidatorOptions.Global.DisplayNameResolver = (type, memberInfo, expression) =>
+            {
                 return memberInfo.GetCustomAttribute<System.ComponentModel.DataAnnotations.DisplayAttribute>()?.GetName();
             };
 
