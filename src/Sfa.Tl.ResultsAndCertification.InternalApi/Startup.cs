@@ -135,8 +135,9 @@ namespace Sfa.Tl.ResultsAndCertification.InternalApi
             services.AddAutoMapper(typeof(Startup).Assembly.GetReferencedAssemblies().Where(a => a.FullName.Contains("Sfa.Tl.ResultsAndCertification.Application")).Select(Assembly.Load));
             RegisterApplicationServices(services);
 
-            ValidatorOptions.Global.DisplayNameResolver = (type, memberInfo, expression) =>
-                memberInfo?.GetCustomAttribute<System.ComponentModel.DataAnnotations.DisplayAttribute>()?.GetName();
+            ValidatorOptions.Global.DisplayNameResolver = (type, memberInfo, expression) => {
+                return memberInfo.GetCustomAttribute<System.ComponentModel.DataAnnotations.DisplayAttribute>()?.GetName();
+            };
         }
 
         private void RegisterApplicationServices(IServiceCollection services)
