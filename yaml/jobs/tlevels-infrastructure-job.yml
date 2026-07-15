@@ -86,6 +86,7 @@ jobs:
             -providerAddressExtractTrigger "$(providerAddressExtractTrigger)"
             -certificateTrackingExtractTrigger "$(CertificateTrackingExtractTrigger)"
             -enableReplica $(enableReplica)
+            -enableIntTestDb $(enableIntTestDb)
             -containerLifecyclePolicyRules $(containerLifecyclePolicyRules)
             -ipSecurityRestrictions $(ipSecurityRestrictions)
             -internalApiIpSecurityRestrictions $(internalApiIpSecurityRestrictions)'
