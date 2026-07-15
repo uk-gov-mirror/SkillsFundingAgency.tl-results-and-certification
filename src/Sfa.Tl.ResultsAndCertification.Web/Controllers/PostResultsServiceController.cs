@@ -247,6 +247,8 @@ namespace Sfa.Tl.ResultsAndCertification.Web.Controllers
             if (checkAndSubmitDetails != null && (isChangeMode == null || isChangeMode.Value == false))
                 viewModel.SelectedGradeCode = viewModel.Grades?.FirstOrDefault(g => g.Value == checkAndSubmitDetails?.NewGrade)?.Code;
 
+            viewModel.Grades.Remove(viewModel.Grades.FirstOrDefault(g => g.Value == viewModel.Grade));
+
             viewModel.IsRommOutcomeJourney = isRommOutcomeJourney ?? false;
             viewModel.IsChangeMode = isChangeMode ?? false;
             return View(viewModel);
@@ -491,6 +493,8 @@ namespace Sfa.Tl.ResultsAndCertification.Web.Controllers
             var checkAndSubmitDetails = await _cacheService.GetAsync<PrsAppealCheckAndSubmitViewModel>(CacheKey);
             if (checkAndSubmitDetails != null && (isChangeMode == null || isChangeMode.Value == false))
                 viewModel.SelectedGradeCode = viewModel.Grades?.FirstOrDefault(g => g.Value == checkAndSubmitDetails?.NewGrade)?.Code;
+
+            viewModel.Grades.Remove(viewModel.Grades.FirstOrDefault(g => g.Value == viewModel.Grade));
 
             viewModel.IsAppealOutcomeJourney = isAppealOutcomeJourney ?? false;
             viewModel.IsChangeMode = isChangeMode ?? false;
