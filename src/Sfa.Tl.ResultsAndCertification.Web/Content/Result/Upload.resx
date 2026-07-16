@@ -193,7 +193,7 @@
     <value>Upload a file</value>
   </data>
   <data name="Upload_Processing_Spinner_Text" xml:space="preserve">
-    <value>Processing, please wait. This could take up to 10 seconds. Do not refresh.</value>
+    <value>Processing, please wait. This could take up to 2 minutes. Do not refresh.</value>
   </data>
   <data name="Warning_Text" xml:space="preserve">
     <value>Warning</value>
