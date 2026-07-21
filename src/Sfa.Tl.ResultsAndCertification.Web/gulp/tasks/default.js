@@ -91,6 +91,20 @@ gulp.task('copy-result-upload-js', function () {
         .pipe(gulp.dest(paths.dist.defaultJs));
 });
 
+gulp.task('copy-withdrawls-upload-js', function () {
+    return src([
+        'Frontend/src/javascripts/withdrawals-upload.js'
+    ])
+        .pipe(concat('withdrawals-upload.js'))
+        .pipe(minify({
+            noSource: true,
+            ext: {
+                min: '.min.js'
+            }
+        }))
+        .pipe(gulp.dest(paths.dist.defaultJs));
+});
+
 gulp.task('copy-industry-placement-upload-js', function () {
     return src([
         'Frontend/src/javascripts/industry-placement-upload.js'
