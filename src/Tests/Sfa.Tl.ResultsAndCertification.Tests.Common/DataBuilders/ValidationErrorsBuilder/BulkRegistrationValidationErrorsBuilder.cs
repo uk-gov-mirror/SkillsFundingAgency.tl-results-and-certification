@@ -76,6 +76,12 @@ namespace Sfa.Tl.ResultsAndCertification.Tests.Common.DataBuilders.BulkRegistrat
             {
                 RowNum = "2",
                 Uln = "111111111",
+                ErrorMessage = ValidationMessages.LearnerFullNameMaxLength
+            },
+            new BulkProcessValidationError
+            {
+                RowNum = "2",
+                Uln = "111111111",
                 ErrorMessage = "Date of birth must be a valid date in DDMMYYYY format"
             },
             new BulkProcessValidationError
