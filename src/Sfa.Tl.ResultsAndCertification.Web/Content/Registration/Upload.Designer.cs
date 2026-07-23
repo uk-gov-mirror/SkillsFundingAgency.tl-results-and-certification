@@ -250,6 +250,24 @@ namespace Sfa.Tl.ResultsAndCertification.Web.Content.Registration {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Processing registrations file.
+        /// </summary>
+        public static string Processing_Registrations_File_Text {
+            get {
+                return ResourceManager.GetString("Processing_Registrations_File_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Processing withdrawals file.
+        /// </summary>
+        public static string Processing_Withdrawals_File_Text {
+            get {
+                return ResourceManager.GetString("Processing_Withdrawals_File_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Published 25 May 2024.
         /// </summary>
         public static string Registrations_Template_Published_On {
