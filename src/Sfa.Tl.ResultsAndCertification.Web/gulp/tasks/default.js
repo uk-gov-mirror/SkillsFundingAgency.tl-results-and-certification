@@ -105,6 +105,20 @@ gulp.task('copy-withdrawls-upload-js', function () {
         .pipe(gulp.dest(paths.dist.defaultJs));
 });
 
+gulp.task('copy-romms-upload-js', function () {
+    return src([
+        'Frontend/src/javascripts/romms-upload.js'
+    ])
+        .pipe(concat('romms-upload.js'))
+        .pipe(minify({
+            noSource: true,
+            ext: {
+                min: '.min.js'
+            }
+        }))
+        .pipe(gulp.dest(paths.dist.defaultJs));
+});
+
 gulp.task('copy-industry-placement-upload-js', function () {
     return src([
         'Frontend/src/javascripts/industry-placement-upload.js'
