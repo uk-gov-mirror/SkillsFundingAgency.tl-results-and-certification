@@ -181,7 +181,7 @@
     <value>Upload a file</value>
   </data>
   <data name="Upload_Processing_Spinner_Text" xml:space="preserve">
-    <value>Processing, please wait. This could take up to 10 seconds. Do not refresh.</value>
+    <value>Processing, please wait. This could take up to 2 minutes. Do not refresh.</value>
   </data>
   <data name="Romms_Template_Published_On" xml:space="preserve">
     <value>Published 25 September 2024</value>
@@ -200,5 +200,8 @@
   </data>
   <data name="Tlevel_Data_Format_And_Rules" xml:space="preserve">
     <value>T Level data format and rules</value>
+  </data>
+  <data name="Processing_Romms_File_Text" xml:space="preserve">
+    <value>Processing romms file</value>
   </data>
 </root>

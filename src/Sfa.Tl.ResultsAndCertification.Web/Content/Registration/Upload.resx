@@ -180,6 +180,12 @@
   <data name="Para_You_Can_Add_Or_Change_Registration" xml:space="preserve">
     <value>You can add or change registration details for one or more learners by uploading a CSV file.</value>
   </data>
+  <data name="Processing_Registrations_File_Text" xml:space="preserve">
+    <value>Processing registrations file</value>
+  </data>
+  <data name="Processing_Withdrawals_File_Text" xml:space="preserve">
+    <value>Processing withdrawals file</value>
+  </data>
   <data name="Registrations_Template_Published_On" xml:space="preserve">
     <value>Published 25 May 2024</value>
   </data>

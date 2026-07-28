@@ -169,6 +169,15 @@ namespace Sfa.Tl.ResultsAndCertification.Web.Content.Registration {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to First name and last name must be 40 characters or fewer when added together, including spaces.
+        /// </summary>
+        public static string Validation_Fullname_Max_Length {
+            get {
+                return ResourceManager.GetString("Validation_Fullname_Max_Length", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Names can only contain letters (including accented characters), hyphens, and straight apostrophes (&apos;).
         /// </summary>
         public static string Validation_Lastname_Cannot_Contain_Integers_Or_Special_Characters {
