@@ -18,5 +18,9 @@ namespace Sfa.Tl.ResultsAndCertification.Web.ViewModel.Registration.Manual
         public string Lastname { get; set; }
         public bool IsChangeMode { get; set; }
         public virtual BackLinkModel BackLink => new BackLinkModel { RouteName = IsChangeMode ? RouteConstants.AddRegistrationCheckAndSubmit : RouteConstants.AddRegistrationUln };
+
+        // UCAS do not add a ‘hidden' space character between first and last name
+        [MaxLength(40, ErrorMessageResourceType = typeof(ErrorResource.LearnersName), ErrorMessageResourceName = "Validation_Fullname_Max_Length")]
+        public string Fullname => $"{Firstname}{Lastname}";
     }
 }

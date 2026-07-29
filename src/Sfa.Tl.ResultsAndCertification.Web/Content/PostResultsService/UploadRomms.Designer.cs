@@ -19,7 +19,7 @@ namespace Sfa.Tl.ResultsAndCertification.Web.Content.PostResultsService {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class UploadRomms {
@@ -250,6 +250,15 @@ namespace Sfa.Tl.ResultsAndCertification.Web.Content.PostResultsService {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Processing romms file.
+        /// </summary>
+        public static string Processing_Romms_File_Text {
+            get {
+                return ResourceManager.GetString("Processing_Romms_File_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Published 25 September 2024.
         /// </summary>
         public static string Romms_Template_Published_On {
@@ -304,7 +313,7 @@ namespace Sfa.Tl.ResultsAndCertification.Web.Content.PostResultsService {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Processing, please wait. This could take up to 10 seconds. Do not refresh..
+        ///   Looks up a localized string similar to Processing, please wait. This could take up to 2 minutes. Do not refresh..
         /// </summary>
         public static string Upload_Processing_Spinner_Text {
             get {
