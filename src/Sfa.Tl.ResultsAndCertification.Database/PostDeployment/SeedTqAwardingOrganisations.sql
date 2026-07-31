@@ -33,7 +33,9 @@ USING (VALUES
 	(25, 2, 25, 1),
 	(26, 2, 26, 1),
 	(27, 1, 27, 1),
-	(28, 2, 28, 1)
+	(28, 2, 28, 1),
+	(29, 2, 29, 1),
+	(30, 2, 30, 1)
   )
 AS Source ([Id], [TlAwardingOrganisatonId], [TlPathwayId], [ReviewStatus]) 
 ON Target.[Id] = Source.[Id] 
