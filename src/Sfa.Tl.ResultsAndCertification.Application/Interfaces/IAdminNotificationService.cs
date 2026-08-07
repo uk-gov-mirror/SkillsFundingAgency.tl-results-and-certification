@@ -14,5 +14,7 @@ namespace Sfa.Tl.ResultsAndCertification.Application.Interfaces
         Task<AddNotificationResponse> AddNotificationAsync(AddNotificationRequest request);
 
         Task<bool> UpdateNotificationAsync(UpdateNotificationRequest request, Func<DateTime> getNow);
+
+        Task<DeleteNotificationResponse> DeleteNotificationAsync(int notificationId);
     }
 }

@@ -120,37 +120,19 @@
   <data name="Button_Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
-  <data name="Button_Delete" xml:space="preserve">
+  <data name="Button_Submit" xml:space="preserve">
     <value>Delete</value>
   </data>
-  <data name="Button_Edit" xml:space="preserve">
-    <value>Edit notification</value>
+  <data name="Heading_Delete_Banner" xml:space="preserve">
+    <value>Delete notification</value>
   </data>
-  <data name="Label_Active" xml:space="preserve">
-    <value>Active</value>
+  <data name="Label_Delete_Confirmation_Message" xml:space="preserve">
+    <value>Are you sure you want to delete notification {0}?</value>
   </data>
-  <data name="Label_Content" xml:space="preserve">
-    <value>Content</value>
-  </data>
-  <data name="Label_End_Date" xml:space="preserve">
-    <value>End</value>
-  </data>
-  <data name="Label_No" xml:space="preserve">
-    <value>No</value>
-  </data>
-  <data name="Label_Preview" xml:space="preserve">
-    <value>Preview</value>
-  </data>
-  <data name="Label_Start_Date" xml:space="preserve">
-    <value>Start</value>
-  </data>
-  <data name="Label_Target" xml:space="preserve">
-    <value>Target</value>
-  </data>
-  <data name="Label_Yes" xml:space="preserve">
-    <value>Yes</value>
+  <data name="Message_Notification_Deleted" xml:space="preserve">
+    <value>The notification has been deleted</value>
   </data>
   <data name="Page_Title" xml:space="preserve">
-    <value>Notification details – Admin</value>
+    <value>Delete notification – Admin</value>
   </data>
 </root>

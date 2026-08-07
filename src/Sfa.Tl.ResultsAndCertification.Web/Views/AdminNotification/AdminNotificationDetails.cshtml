@@ -41,6 +41,7 @@
         <div class="govuk-button-group">
             <a id="editButton" class="govuk-button" role="button" data-prevent-double-click="true" asp-route="@RouteConstants.AdminEditNotification" asp-route-notificationId="@Model.NotificationId">@AdminNotificationDetails.Button_Edit</a>
             <a id="btnCancel" class="govuk-button govuk-button--secondary" data-module="govuk-button" data-prevent-double-click="true" asp-route="@RouteConstants.AdminFindNotification">@AdminNotificationDetails.Button_Cancel</a>
+            <a class="govuk-link" asp-route="@RouteConstants.AdminDeleteNotification" asp-route-notificationId="@Model.NotificationId">@AdminNotificationDetails.Button_Delete</a>
         </div>
     </div>
 </div>

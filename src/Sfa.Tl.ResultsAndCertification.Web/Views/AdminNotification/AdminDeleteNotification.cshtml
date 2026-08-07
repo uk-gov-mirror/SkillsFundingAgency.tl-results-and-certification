@@ -1,0 +1,33 @@
+﻿@model Sfa.Tl.ResultsAndCertification.Web.ViewModel.AdminNotification.AdminDeleteNotificationViewModel
+@using Sfa.Tl.ResultsAndCertification.Web.Content.AdminNotification
+@using Sfa.Tl.ResultsAndCertification.Common.Helpers
+@using Sfa.Tl.ResultsAndCertification.Common.Enum
+
+@{
+    ViewData["Title"] = AdminDeleteNotification.Page_Title;
+}
+
+@section NavigationBar
+{
+    <vc:back-link model=Model.BackLink></vc:back-link>
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-three-quarters">
+        <form asp-route="@RouteConstants.SubmitAdminDeleteNotification" asp-route-notificationid="@Model.NotificationId">
+            <h1 class="govuk-heading-l">@AdminDeleteNotification.Heading_Delete_Banner</h1>
+
+            <div class="govuk-!-margin-bottom-9">
+                <p class="govuk-body">
+                    @String.Format(AdminDeleteNotification.Label_Delete_Confirmation_Message, Model.Title)
+                </p>
+            </div>
+
+            <!-- Submit / Cancel buttons -->
+            <div class="govuk-button-group">
+                <button id="submitButton" class="govuk-button" role="button" data-prevent-double-click="true">@AdminDeleteNotification.Button_Submit</button>
+                <a id="btnCancel" class="govuk-button govuk-button--secondary" data-module="govuk-button" data-prevent-double-click="true" asp-route="@RouteConstants.AdminFindNotification">@AdminDeleteNotification.Button_Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>

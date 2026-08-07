@@ -22,14 +22,14 @@ namespace Sfa.Tl.ResultsAndCertification.Web.Content.AdminNotification {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class AdminNotificationDetails {
+    public class AdminDeleteNotification {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal AdminNotificationDetails() {
+        internal AdminDeleteNotification() {
         }
         
         /// <summary>
@@ -39,8 +39,8 @@ namespace Sfa.Tl.ResultsAndCertification.Web.Content.AdminNotification {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Sfa.Tl.ResultsAndCertification.Web.Content.AdminNotification.AdminNotificationDet" +
-                            "ails", typeof(AdminNotificationDetails).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Sfa.Tl.ResultsAndCertification.Web.Content.AdminNotification.AdminDeleteNotificat" +
+                            "ion", typeof(AdminDeleteNotification).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -73,95 +73,41 @@ namespace Sfa.Tl.ResultsAndCertification.Web.Content.AdminNotification {
         /// <summary>
         ///   Looks up a localized string similar to Delete.
         /// </summary>
-        public static string Button_Delete {
+        public static string Button_Submit {
             get {
-                return ResourceManager.GetString("Button_Delete", resourceCulture);
+                return ResourceManager.GetString("Button_Submit", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit notification.
+        ///   Looks up a localized string similar to Delete notification.
         /// </summary>
-        public static string Button_Edit {
+        public static string Heading_Delete_Banner {
             get {
-                return ResourceManager.GetString("Button_Edit", resourceCulture);
+                return ResourceManager.GetString("Heading_Delete_Banner", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Active.
+        ///   Looks up a localized string similar to Are you sure you want to delete notification {0}?.
         /// </summary>
-        public static string Label_Active {
+        public static string Label_Delete_Confirmation_Message {
             get {
-                return ResourceManager.GetString("Label_Active", resourceCulture);
+                return ResourceManager.GetString("Label_Delete_Confirmation_Message", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Content.
+        ///   Looks up a localized string similar to The notification has been deleted.
         /// </summary>
-        public static string Label_Content {
+        public static string Message_Notification_Deleted {
             get {
-                return ResourceManager.GetString("Label_Content", resourceCulture);
+                return ResourceManager.GetString("Message_Notification_Deleted", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to End.
-        /// </summary>
-        public static string Label_End_Date {
-            get {
-                return ResourceManager.GetString("Label_End_Date", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to No.
-        /// </summary>
-        public static string Label_No {
-            get {
-                return ResourceManager.GetString("Label_No", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Preview.
-        /// </summary>
-        public static string Label_Preview {
-            get {
-                return ResourceManager.GetString("Label_Preview", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Start.
-        /// </summary>
-        public static string Label_Start_Date {
-            get {
-                return ResourceManager.GetString("Label_Start_Date", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Target.
-        /// </summary>
-        public static string Label_Target {
-            get {
-                return ResourceManager.GetString("Label_Target", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Yes.
-        /// </summary>
-        public static string Label_Yes {
-            get {
-                return ResourceManager.GetString("Label_Yes", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Notification details – Admin.
+        ///   Looks up a localized string similar to Delete notification – Admin.
         /// </summary>
         public static string Page_Title {
             get {

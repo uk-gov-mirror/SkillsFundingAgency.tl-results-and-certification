@@ -195,6 +195,7 @@
         public const string GetNotification = "/api/adminnotification/GetNotification/{0}";
         public const string AddNotification = "/api/adminnotification/AddNotification";
         public const string UpdateNotification = "/api/adminnotification/UpdateNotification";
+        public const string DeleteNotification = "/api/adminnotification/DeleteNotification/{0}";
 
         //Admin assessment series dates
         public const string GetAssessmentSeriesDate = "/api/adminassessmentseriesdates/GetAssessmentSeriesDate/{0}";
