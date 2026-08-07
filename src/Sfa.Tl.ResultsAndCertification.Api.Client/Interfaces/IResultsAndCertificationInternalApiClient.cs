@@ -243,6 +243,8 @@ namespace Sfa.Tl.ResultsAndCertification.Api.Client.Interfaces
 
         Task<bool> UpdateNotificationAsync(UpdateNotificationRequest request);
 
+        Task<DeleteNotificationResponse> DeleteNotificationAsync(int notificationId);
+
         #endregion
 
         #region Admin assessment series table

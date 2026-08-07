@@ -192,6 +192,34 @@ namespace Sfa.Tl.ResultsAndCertification.Web.Controllers
             return RedirectToRoute(RouteConstants.AdminNotificationDetails, new { notificationId = response.NotificationId });
         }
 
+        [HttpGet]
+        [Route("admin/delete-notification/{notificationId}", Name = RouteConstants.AdminDeleteNotification)]
+        public async Task<IActionResult> AdminDeleteNotificationAsync(int notificationId)
+        {
+            AdminDeleteNotificationViewModel viewModel = await _loader.GetDeleteNotificationViewModel(notificationId);
+
+            if (viewModel == null)
+            {
+                return RedirectToRoute(RouteConstants.ProblemWithService);
+            }
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [Route("admin/delete-notification", Name = RouteConstants.SubmitAdminDeleteNotification)]
+        public async Task<IActionResult> AdminDeleteNotificationAsync(AdminDeleteNotificationViewModel viewModel)
+        {
+            DeleteNotificationResponse response = await _loader.SubmitDeleteNotificationRequest(viewModel);
+
+            if (!response.Success)
+            {
+                return RedirectToRoute(RouteConstants.ProblemWithService);
+            }
+
+            return RedirectToRoute(RouteConstants.AdminFindNotification);
+        }
+
         private static ValidationResult ValidateNotificationBaseViewModel(AdminNotificationBaseViewModel viewModel)
         {
             AdminNotificationBaseViewModelValidator validator = new();

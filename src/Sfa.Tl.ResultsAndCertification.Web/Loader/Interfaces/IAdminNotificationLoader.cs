@@ -13,8 +13,12 @@ namespace Sfa.Tl.ResultsAndCertification.Web.Loader.Interfaces
         Task<AdminNotificationDetailsViewModel> GetNotificationDetailsViewModel(int notificationId);
 
         Task<AdminEditNotificationViewModel> GetEditNotificationViewModel(int notificationId);
-
+        
         Task<bool> SubmitUpdateNotificationRequest(AdminEditNotificationViewModel viewModel);
+
+        Task<AdminDeleteNotificationViewModel> GetDeleteNotificationViewModel(int notificationId);
+        
+        Task<DeleteNotificationResponse> SubmitDeleteNotificationRequest(AdminDeleteNotificationViewModel viewModel);
 
         Task<AddNotificationResponse> SubmitAddNotificationRequest(AdminAddNotificationViewModel viewModel);
     }

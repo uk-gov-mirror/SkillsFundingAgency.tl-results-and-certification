@@ -64,5 +64,17 @@ namespace Sfa.Tl.ResultsAndCertification.Application.Services
 
             return await _repository.UpdateAsync(notification) > 0;
         }
+        public async Task<DeleteNotificationResponse> DeleteNotificationAsync(int notificationId)
+        {
+            Notification notification = await _repository.GetSingleOrDefaultAsync(b => b.Id == notificationId);
+
+            if (notification == null)
+            {
+                return new DeleteNotificationResponse { Success = false };
+            }
+
+            bool success = await _repository.DeleteAsync(notification) > 0;
+            return new DeleteNotificationResponse { Success = success };
+        }
     }
 }

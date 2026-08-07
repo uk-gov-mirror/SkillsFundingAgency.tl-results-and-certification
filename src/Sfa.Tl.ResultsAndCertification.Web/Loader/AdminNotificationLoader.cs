@@ -71,6 +71,18 @@ namespace Sfa.Tl.ResultsAndCertification.Web.Loader
             return _apiClient.UpdateNotificationAsync(request);
         }
 
+        public async Task<AdminDeleteNotificationViewModel> GetDeleteNotificationViewModel(int notificationId)
+        {
+            GetNotificationResponse response = await _apiClient.GetNotificationAsync(notificationId);
+            return _mapper.Map<AdminDeleteNotificationViewModel>(response);
+        }
+
+        public async Task<DeleteNotificationResponse> SubmitDeleteNotificationRequest(AdminDeleteNotificationViewModel viewModel)
+        {
+            DeleteNotificationRequest request = _mapper.Map<DeleteNotificationRequest>(viewModel);
+            return await _apiClient.DeleteNotificationAsync(request.NotificationId);
+        }
+
         public Task<AddNotificationResponse> SubmitAddNotificationRequest(AdminAddNotificationViewModel viewModel)
         {
             AddNotificationRequest request = _mapper.Map<AddNotificationRequest>(viewModel);
