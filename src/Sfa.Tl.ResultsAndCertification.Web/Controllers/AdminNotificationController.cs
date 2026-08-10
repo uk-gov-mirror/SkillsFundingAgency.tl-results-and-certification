@@ -67,6 +67,8 @@ namespace Sfa.Tl.ResultsAndCertification.Web.Controllers
             searchCriteria.PageNumber = pageNumber;
 
             viewModel = await _loader.SearchNotificationAsync(searchCriteria);
+            viewModel.SuccessBanner = await _cacheService.GetAndRemoveAsync<NotificationBannerModel>(NotificationCacheKey);
+
             return View(viewModel);
         }
 
@@ -118,6 +120,7 @@ namespace Sfa.Tl.ResultsAndCertification.Web.Controllers
             }
 
             viewModel.SuccessBanner = await _cacheService.GetAndRemoveAsync<NotificationBannerModel>(NotificationCacheKey);
+
             return View(viewModel);
         }
 
@@ -216,6 +219,9 @@ namespace Sfa.Tl.ResultsAndCertification.Web.Controllers
             {
                 return RedirectToRoute(RouteConstants.ProblemWithService);
             }
+
+            var notificationBanner = new AdminNotificationBannerModel(AdminDeleteNotification.Message_Notification_Deleted);
+            await _cacheService.SetAsync<NotificationBannerModel>(NotificationCacheKey, notificationBanner, CacheExpiryTime.XSmall);
 
             return RedirectToRoute(RouteConstants.AdminFindNotification);
         }

@@ -2,6 +2,7 @@
 using Sfa.Tl.ResultsAndCertification.Common.Helpers;
 using Sfa.Tl.ResultsAndCertification.Web.Content.AdminNotification;
 using Sfa.Tl.ResultsAndCertification.Web.ViewComponents.Breadcrumb;
+using Sfa.Tl.ResultsAndCertification.Web.ViewComponents.NotificationBanner;
 using Sfa.Tl.ResultsAndCertification.Web.ViewComponents.Pagination;
 using Sfa.Tl.ResultsAndCertification.Web.ViewModel.Common;
 using System.Collections.Generic;
@@ -14,6 +15,8 @@ namespace Sfa.Tl.ResultsAndCertification.Web.ViewModel.AdminNotification
         public AdminFindNotificationCriteriaViewModel SearchCriteria { get; set; } = new AdminFindNotificationCriteriaViewModel();
 
         public IList<AdminFindNotificationDetailsViewModel> Details { get; set; } = new List<AdminFindNotificationDetailsViewModel>();
+
+        public NotificationBannerModel SuccessBanner { get; set; }
 
         public PagerViewModel PagerInfo { get; set; }
 
