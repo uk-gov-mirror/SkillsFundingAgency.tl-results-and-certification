@@ -457,6 +457,9 @@
               }
             ]
           },
+          "minTlsVersion":{
+            "value": "1.3"
+          },
           "appServiceConnectionStrings": {
             "value": [
             ]
