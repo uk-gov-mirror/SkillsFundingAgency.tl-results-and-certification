@@ -152,7 +152,7 @@
     }
   },
   "variables": {
-    "deploymentUrlBase": "https://raw.githubusercontent.com/SkillsFundingAgency/tl-platform-building-blocks/feature/TLD-735-scmtls-function-app/ArmTemplates/",
+    "deploymentUrlBase": "https://raw.githubusercontent.com/SkillsFundingAgency/tl-platform-building-blocks/master/ArmTemplates/",
     "uiAppName": "[concat(parameters('resourceNamePrefix'), '-web')]",
     "internalApiAppName": "[concat(parameters('resourceNamePrefix'), '-internal-api')]",
     "appInsightName": "[concat(parameters('resourceNamePrefix'), '-ai')]",
