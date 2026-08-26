@@ -466,7 +466,7 @@
                         "value": "[variables('keyVaultName')]"
                     },
                     "assignmentType": {
-                        "value": "Key Vault Reader"
+                        "value": "Key Vault Administrator"
                     },
                     "principalId": {
                         "value": "[parameters('resacFunctionAppManagedIdentityPrincipalId')]"
