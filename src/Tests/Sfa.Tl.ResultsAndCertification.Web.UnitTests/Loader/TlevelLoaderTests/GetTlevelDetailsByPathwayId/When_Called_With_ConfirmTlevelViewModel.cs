@@ -31,18 +31,18 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.TlevelLoaderTests.
                 c.ConstructServicesUsing(type =>
                             type.Name.Contains("UserNameResolver") ?
                                 new UserNameResolver<TlevelPathwayDetails, ConfirmTlevelViewModel>(HttpContextAccessor) : null);
-            });
+            }, LoggerFactory);
             Mapper = new AutoMapper.Mapper(mapperConfig);
         }
 
-        public async override Task When()
+        public override async Task When()
         {
             _actualResult = await Loader.GetVerifyTlevelDetailsByPathwayIdAsync(Ukprn, Id);
         }
 
         [Fact]
         public void Then_Expected_Methods_Called()
-        {            
+        {
             InternalApiClient.Received(1).GetTlevelDetailsByPathwayIdAsync(Ukprn, Id);
         }
 

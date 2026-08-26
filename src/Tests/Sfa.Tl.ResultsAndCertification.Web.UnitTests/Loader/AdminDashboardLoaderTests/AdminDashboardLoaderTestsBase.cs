@@ -18,6 +18,7 @@ using Sfa.Tl.ResultsAndCertification.Web.ViewModel.AdminDashboard.Result;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
+using Microsoft.Extensions.Logging;
 
 namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.AdminDashboardLoaderTests
 {
@@ -25,11 +26,13 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.AdminDashboardLoad
     {
         protected IResultsAndCertificationInternalApiClient ApiClient;
         protected AdminDashboardLoader Loader;
+        protected ILoggerFactory LoggerFactory;
 
         public override void Setup()
         {
             ApiClient = Substitute.For<IResultsAndCertificationInternalApiClient>();
-            var mapper = CreateMapper();
+            LoggerFactory = Substitute.For<ILoggerFactory>();
+            var mapper = CreateMapper(LoggerFactory);
 
             var config = new ResultsAndCertificationConfiguration
             {
@@ -39,7 +42,7 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.AdminDashboardLoad
             Loader = new AdminDashboardLoader(ApiClient, mapper, config);
         }
 
-        private static AutoMapper.Mapper CreateMapper()
+        private static AutoMapper.Mapper CreateMapper(ILoggerFactory loggerFactory)
         {
             string Givenname = "test";
             string Surname = "user";
@@ -92,7 +95,7 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.AdminDashboardLoad
                                return null;
                            }
                        });
-                });
+                }, loggerFactory);
 
             return new AutoMapper.Mapper(mapperConfig);
         }

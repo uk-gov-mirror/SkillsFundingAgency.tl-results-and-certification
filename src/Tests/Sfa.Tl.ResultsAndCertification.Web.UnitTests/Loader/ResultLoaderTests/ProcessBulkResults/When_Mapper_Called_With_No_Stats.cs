@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using NSubstitute;
 using Sfa.Tl.ResultsAndCertification.Common.Enum;
 using Sfa.Tl.ResultsAndCertification.Models.Contracts;
@@ -78,7 +79,7 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.ResultLoaderTests.
                                 new UserNameResolver<UploadResultsRequestViewModel, BulkProcessRequest>(HttpContextAccessor) :
                                 type.Name.Contains("UserEmailResolver") ? (object)new UserEmailResolver<UploadResultsRequestViewModel, BulkProcessRequest>(HttpContextAccessor) :
                                 null);
-            });
+            }, LoggerFactory);
             Mapper = new AutoMapper.Mapper(mapperConfig);
         }
     }

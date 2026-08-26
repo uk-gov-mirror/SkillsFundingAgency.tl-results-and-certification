@@ -20,6 +20,7 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.IndustryPlacementL
         protected IHttpContextAccessor HttpContextAccessor;
         protected IResultsAndCertificationInternalApiClient InternalApiClient;
         protected IMapper Mapper;
+        protected ILoggerFactory LoggerFactory;
         protected ILogger<IndustryPlacementLoader> Logger;
         protected IIndustryPlacementLoader Loader;
         protected IBlobStorageService BlobStorageService;
@@ -43,6 +44,7 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.IndustryPlacementL
             Logger = Substitute.For<ILogger<IndustryPlacementLoader>>();
             InternalApiClient = Substitute.For<IResultsAndCertificationInternalApiClient>();
             BlobStorageService = Substitute.For<IBlobStorageService>();
+            LoggerFactory = Substitute.For<ILoggerFactory>();
             FormFile = Substitute.For<IFormFile>();
             BlobUniqueReference = Guid.NewGuid();
             BulkIndustryPlacementRequest = new BulkProcessRequest { AoUkprn = Ukprn };
@@ -72,7 +74,7 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.IndustryPlacementL
             Loader = new IndustryPlacementLoader(InternalApiClient, Mapper, BlobStorageService);
         }
 
-        public async override Task When()
+        public override async Task When()
         {
             ActualResult = await Loader.ProcessBulkIndustryPlacementsAsync(UploadIndustryPlacementsRequestViewModel);
         }

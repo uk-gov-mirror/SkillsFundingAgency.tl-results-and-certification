@@ -20,6 +20,7 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.ResultLoaderTests.
         protected IHttpContextAccessor HttpContextAccessor;
         protected IResultsAndCertificationInternalApiClient InternalApiClient;
         protected IMapper Mapper;
+        protected ILoggerFactory LoggerFactory;
         protected ILogger<ResultLoader> Logger;
         protected IResultLoader Loader;
         protected IBlobStorageService BlobStorageService;
@@ -43,6 +44,7 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.ResultLoaderTests.
             Logger = Substitute.For<ILogger<ResultLoader>>();
             InternalApiClient = Substitute.For<IResultsAndCertificationInternalApiClient>();
             BlobStorageService = Substitute.For<IBlobStorageService>();
+            LoggerFactory = Substitute.For<ILoggerFactory>();
             FormFile = Substitute.For<IFormFile>();
             BlobUniqueReference = Guid.NewGuid();
             BulkResultRequest = new BulkProcessRequest { AoUkprn = Ukprn };
@@ -72,7 +74,7 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.ResultLoaderTests.
             Loader = new ResultLoader(Mapper, Logger, InternalApiClient, BlobStorageService);
         }
 
-        public async override Task When()
+        public override async Task When()
         {
             ActualResult = await Loader.ProcessBulkResultsAsync(UploadResultsRequestViewModel);
         }

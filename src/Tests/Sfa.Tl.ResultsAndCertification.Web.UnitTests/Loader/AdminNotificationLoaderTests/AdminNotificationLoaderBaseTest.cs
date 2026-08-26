@@ -8,6 +8,7 @@ using Sfa.Tl.ResultsAndCertification.Web.Loader;
 using Sfa.Tl.ResultsAndCertification.Web.Mapper.Resolver;
 using Sfa.Tl.ResultsAndCertification.Web.ViewModel.AdminNotification;
 using System.Security.Claims;
+using Microsoft.Extensions.Logging;
 
 namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.AdminNotificationLoaderTests
 {
@@ -15,14 +16,16 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.AdminNotificationL
     {
         protected IResultsAndCertificationInternalApiClient ApiClient;
         protected AdminNotificationLoader Loader;
+        protected ILoggerFactory LoggerFactory;
 
         public override void Setup()
         {
             ApiClient = Substitute.For<IResultsAndCertificationInternalApiClient>();
-            Loader = new AdminNotificationLoader(ApiClient, CreateMapper());
+            LoggerFactory = Substitute.For<ILoggerFactory>();
+            Loader = new AdminNotificationLoader(ApiClient, CreateMapper(LoggerFactory));
         }
 
-        private static AutoMapper.Mapper CreateMapper()
+        private static AutoMapper.Mapper CreateMapper(ILoggerFactory loggerFactory)
         {
             IHttpContextAccessor httpContextAccessor = Substitute.For<IHttpContextAccessor>();
 
@@ -55,7 +58,7 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.AdminNotificationL
                         return null;
                     }
                 });
-            });
+            }, loggerFactory);
 
             return new AutoMapper.Mapper(mapperConfig);
         }

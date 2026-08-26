@@ -12,6 +12,7 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.ProviderRegistrati
     public abstract class ProviderRegistrationsLoaderBaseTest : BaseTest<AdminChangeLogLoader>
     {
         protected IResultsAndCertificationInternalApiClient ApiClient;
+        protected ILoggerFactory LoggerFactory;
         protected IBlobStorageService BlobStorageService;
 
         protected ProviderRegistrationsLoader Loader;
@@ -19,11 +20,12 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.ProviderRegistrati
         public override void Setup()
         {
             ApiClient = Substitute.For<IResultsAndCertificationInternalApiClient>();
+            LoggerFactory = Substitute.For<ILoggerFactory>();
             BlobStorageService = Substitute.For<IBlobStorageService>();
-            
+
             var logger = Substitute.For<ILogger<ProviderRegistrationsLoader>>();
 
-            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(ProviderRegistrationsMapper).Assembly));
+            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(ProviderRegistrationsMapper).Assembly), LoggerFactory);
             var mapper = new AutoMapper.Mapper(mapperConfig);
 
             Loader = new ProviderRegistrationsLoader(ApiClient, BlobStorageService, mapper, logger);

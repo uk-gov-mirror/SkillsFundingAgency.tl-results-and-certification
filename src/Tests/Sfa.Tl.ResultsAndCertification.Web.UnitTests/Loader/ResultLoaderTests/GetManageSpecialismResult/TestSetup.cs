@@ -22,6 +22,7 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.ResultLoaderTests.
 
         protected IResultsAndCertificationInternalApiClient InternalApiClient;
         protected IMapper Mapper;
+        protected ILoggerFactory LoggerFactory;
         protected ILogger<ResultLoader> Logger;
         public IBlobStorageService BlobStorageService { get; private set; }
 
@@ -37,14 +38,15 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.ResultLoaderTests.
             Logger = Substitute.For<ILogger<ResultLoader>>();
             BlobStorageService = Substitute.For<IBlobStorageService>();
             InternalApiClient = Substitute.For<IResultsAndCertificationInternalApiClient>();
+            LoggerFactory = Substitute.For<ILoggerFactory>();
 
-            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(ResultMapper).Assembly));
+            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(ResultMapper).Assembly), LoggerFactory);
             Mapper = new AutoMapper.Mapper(mapperConfig);
 
             Loader = new ResultLoader(Mapper, Logger, InternalApiClient, BlobStorageService);
         }
 
-        public async override Task When()
+        public override async Task When()
         {
             ActualResult = await Loader.GetManageSpecialismResultAsync(AoUkprn, ProfileId, AssessmentId, IsChangeMode);
         }

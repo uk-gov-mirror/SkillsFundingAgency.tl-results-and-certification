@@ -20,6 +20,7 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.RegistrationLoader
         protected readonly long AoUkprn = 12345678;
         protected IResultsAndCertificationInternalApiClient InternalApiClient;
         protected IMapper Mapper;
+        protected ILoggerFactory LoggerFactory;
         protected ILogger<RegistrationLoader> Logger;
         public IBlobStorageService BlobStorageService { get; private set; }
 
@@ -49,19 +50,20 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.RegistrationLoader
                 }))
             });
 
+            LoggerFactory = Substitute.For<ILoggerFactory>();
             var mapperConfig = new MapperConfiguration(c =>
             {
                 c.AddMaps(typeof(RegistrationMapper).Assembly);
                 c.ConstructServicesUsing(type =>
                             type.Name.Contains("UserNameResolver") ?
                                 new UserNameResolver<ChangeSpecialismViewModel, ManageRegistration>(HttpContextAccessor) : null);
-            });
+            }, LoggerFactory);
 
             Mapper = new AutoMapper.Mapper(mapperConfig);
             Loader = new RegistrationLoader(Mapper, Logger, InternalApiClient, BlobStorageService);
         }
 
-        public async override Task When()
+        public override async Task When()
         {
             ActualResult = await Loader.ProcessSpecialismChangeAsync(AoUkprn, ViewModel);
         }

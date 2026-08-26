@@ -19,6 +19,7 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.GetRegistrationPro
         protected IResultsAndCertificationInternalApiClient InternalApiClient;
         protected IMapper Mapper;
         protected ILogger<RegistrationLoader> Logger;
+        protected ILoggerFactory LoggerFactory;
         public IBlobStorageService BlobStorageService { get; private set; }
 
         protected RegistrationLoader Loader;
@@ -29,14 +30,15 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.GetRegistrationPro
             Logger = Substitute.For<ILogger<RegistrationLoader>>();
             BlobStorageService = Substitute.For<IBlobStorageService>();
             InternalApiClient = Substitute.For<IResultsAndCertificationInternalApiClient>();
+            LoggerFactory = Substitute.For<ILoggerFactory>();
 
-            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(RegistrationMapper).Assembly));
+            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(RegistrationMapper).Assembly), LoggerFactory);
             Mapper = new AutoMapper.Mapper(mapperConfig);
 
             Loader = new RegistrationLoader(Mapper, Logger, InternalApiClient, BlobStorageService);
         }
 
-        public async override Task When()
+        public override async Task When()
         {
             ActualResult = await Loader.GetRegistrationProfileAsync<ChangeLearnersNameViewModel>(AoUkprn, ProfileId);
         }

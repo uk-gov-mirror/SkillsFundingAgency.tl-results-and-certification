@@ -13,7 +13,6 @@ using Sfa.Tl.ResultsAndCertification.Web.ViewModel.Registration.Manual;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-
 namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.RegistrationLoaderTests.RejoinRegistration
 {
     public abstract class TestSetup : BaseTest<RegistrationLoader>
@@ -26,6 +25,7 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.RegistrationLoader
         protected long Uln;
         protected bool ApiClientResponse;
         protected IMapper Mapper;
+        protected ILoggerFactory LoggerFactory;
         protected ILogger<RegistrationLoader> Logger;
         protected IResultsAndCertificationInternalApiClient InternalApiClient;
         protected RegistrationLoader Loader;
@@ -51,13 +51,14 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.RegistrationLoader
                 }))
             });
 
+            LoggerFactory = Substitute.For<ILoggerFactory>();
             var mapperConfig = new MapperConfiguration(c =>
             {
                 c.AddMaps(typeof(RegistrationMapper).Assembly);
                 c.ConstructServicesUsing(type =>
                             type.Name.Contains("UserNameResolver") ?
                                 new UserNameResolver<RejoinRegistrationViewModel, RejoinRegistrationRequest>(HttpContextAccessor) : null);
-            });
+            }, LoggerFactory);
 
             Uln = 123456789;
             ProfileId = 1;
@@ -65,7 +66,7 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.RegistrationLoader
             Loader = new RegistrationLoader(Mapper, Logger, InternalApiClient, BlobStorageService);
         }
 
-        public async override Task When()
+        public override async Task When()
         {
             ActualResult = await Loader.RejoinRegistrationAsync(AoUkprn, ViewModel);
         }

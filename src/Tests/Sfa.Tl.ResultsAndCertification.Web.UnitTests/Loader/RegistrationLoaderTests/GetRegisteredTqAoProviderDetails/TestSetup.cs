@@ -24,6 +24,7 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.RegistrationLoader
         protected IBlobStorageService BlobStorageService;
         protected IList<ProviderDetails> ApiClientResponse;
         protected SelectProviderViewModel ActualResult;
+        protected ILoggerFactory LoggerFactory;
 
         public override void Setup()
         {
@@ -46,10 +47,11 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.RegistrationLoader
             Logger = Substitute.For<ILogger<RegistrationLoader>>();
             BlobStorageService = Substitute.For<IBlobStorageService>();
             InternalApiClient = Substitute.For<IResultsAndCertificationInternalApiClient>();
+            LoggerFactory = Substitute.For<ILoggerFactory>();
             InternalApiClient.GetTqAoProviderDetailsAsync(Ukprn)
                 .Returns(ApiClientResponse);
 
-            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(ProviderMapper).Assembly));
+            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(ProviderMapper).Assembly), LoggerFactory);
             Mapper = new AutoMapper.Mapper(mapperConfig);
         }
 
@@ -58,7 +60,7 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.RegistrationLoader
             Loader = new RegistrationLoader(Mapper, Logger, InternalApiClient, BlobStorageService);
         }
 
-        public async override Task When()
+        public override async Task When()
         {
             ActualResult = await Loader.GetRegisteredTqAoProviderDetailsAsync(Ukprn);
         }

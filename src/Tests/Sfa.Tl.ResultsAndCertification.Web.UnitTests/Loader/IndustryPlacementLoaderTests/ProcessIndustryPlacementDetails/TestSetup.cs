@@ -13,7 +13,7 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.IndustryPlacementL
         protected bool ActualResult { get; set; }
         protected IndustryPlacementViewModel ViewModel { get; set; }
 
-        public async override Task When()
+        public override async Task When()
         {
             ActualResult = await Loader.ProcessIndustryPlacementDetailsAsync(ProviderUkprn, ViewModel);
         }
@@ -27,8 +27,7 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.IndustryPlacementL
                             type.Name.Contains("UserNameResolver") ?
                                 new UserNameResolver<IndustryPlacementViewModel, IndustryPlacementRequest>(HttpContextAccessor) :
                                 null);
-
-            });
+            }, LoggerFactory);
             Mapper = new AutoMapper.Mapper(mapperConfig);
         }
     }

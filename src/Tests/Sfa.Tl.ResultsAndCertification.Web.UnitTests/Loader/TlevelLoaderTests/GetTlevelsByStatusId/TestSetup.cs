@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.Extensions.Logging;
 using NSubstitute;
 using Sfa.Tl.ResultsAndCertification.Api.Client.Interfaces;
 using Sfa.Tl.ResultsAndCertification.Models.Contracts;
@@ -15,12 +16,13 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.TlevelLoaderTests.
     {
         protected IResultsAndCertificationInternalApiClient InternalApiClient;
         protected IMapper Mapper;
+        protected ILoggerFactory LoggerFactory;
         protected TlevelLoader Loader;
         protected readonly int statusId = 9;
         protected readonly long Ukprn = 1024;
         protected int PathwayId = 1;
         protected int StatusId = 1;
-        
+
         protected IEnumerable<AwardingOrganisationPathwayStatus> ApiClientResponse;
         protected IEnumerable<YourTlevelViewModel> ActualResult;
         protected AwardingOrganisationPathwayStatus ExpectedResult;
@@ -30,14 +32,14 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.TlevelLoaderTests.
         {
             ExpectedResult = new AwardingOrganisationPathwayStatus { PathwayId = PathwayId, TlevelTitle = "Tlevel Title", StatusId = 1 };
             ApiClientResponse = new List<AwardingOrganisationPathwayStatus> { ExpectedResult };
-            
+
             InternalApiClient = Substitute.For<IResultsAndCertificationInternalApiClient>();
+            LoggerFactory = Substitute.For<ILoggerFactory>();
             InternalApiClient.GetTlevelsByStatusIdAsync(Ukprn, statusId)
                 .Returns(ApiClientResponse);
 
-            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(TlevelMapper).Assembly));
+            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(TlevelMapper).Assembly), LoggerFactory);
             Mapper = new AutoMapper.Mapper(mapperConfig);
-
         }
 
         public override void Given()
@@ -45,7 +47,7 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.TlevelLoaderTests.
             Loader = new TlevelLoader(InternalApiClient, Mapper);
         }
 
-        public async override Task When()
+        public override async Task When()
         {
             ActualResult = await Loader.GetTlevelsByStatusIdAsync(Ukprn, statusId);
         }

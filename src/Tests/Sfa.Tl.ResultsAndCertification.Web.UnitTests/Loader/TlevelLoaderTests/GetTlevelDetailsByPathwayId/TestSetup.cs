@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using NSubstitute;
 using Sfa.Tl.ResultsAndCertification.Api.Client.Interfaces;
 using Sfa.Tl.ResultsAndCertification.Models.Contracts;
@@ -39,6 +40,8 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.TlevelLoaderTests.
         // Dependencies
         protected IHttpContextAccessor HttpContextAccessor;
 
+        protected ILoggerFactory LoggerFactory;
+
         public override void Setup()
         {
             HttpContextAccessor = Substitute.For<IHttpContextAccessor>();
@@ -59,6 +62,7 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.TlevelLoaderTests.
 
             ApiClientResponse = new TlevelPathwayDetails { PathwayId = 1, PathwayName = PathwayName, RouteName = RouteName, PathwayStatusId = 2, Specialisms = Specialisms };
             ExpectedResult = new TLevelConfirmedDetailsViewModel { PathwayId = 1, IsValid = ShowSomethingIsNotRight, Specialisms = new List<string> { "Civil Engineering<br/>(97865897)", "Assisting teaching<br/>(7654321)" } };
+            LoggerFactory = Substitute.For<ILoggerFactory>();
 
             CreateMapper();
 
@@ -74,8 +78,8 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.TlevelLoaderTests.
                             type.Name.Contains("UserNameResolver") ?
                                 new UserNameResolver<TlevelPathwayDetails, TLevelConfirmedDetailsViewModel>(HttpContextAccessor) :
                                 null);
-            });
+            }, LoggerFactory);
             Mapper = new AutoMapper.Mapper(mapperConfig);
-        }               
+        }
     }
 }

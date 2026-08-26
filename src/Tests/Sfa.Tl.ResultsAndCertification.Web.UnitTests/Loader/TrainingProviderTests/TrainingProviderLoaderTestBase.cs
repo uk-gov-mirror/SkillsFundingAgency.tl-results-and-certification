@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using NSubstitute;
 using Sfa.Tl.ResultsAndCertification.Api.Client.Interfaces;
 using Sfa.Tl.ResultsAndCertification.Tests.Common.BaseTest;
@@ -11,12 +12,14 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.TrainingProviderTe
 {
     public abstract class TrainingProviderLoaderTestBase : BaseTest<TrainingProviderLoader>
     {
+        protected ILoggerFactory LoggerFactory;
         protected readonly string Givenname = "test";
         protected readonly string Surname = "user";
         protected readonly string Email = "test.user@test.com";
 
         // Dependencies
         protected IResultsAndCertificationInternalApiClient InternalApiClient;
+
         protected IMapper Mapper;
         protected IHttpContextAccessor HttpContextAccessor;
         protected TrainingProviderLoader Loader;
@@ -35,10 +38,11 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.TrainingProviderTe
             });
 
             InternalApiClient = Substitute.For<IResultsAndCertificationInternalApiClient>();
-            
-            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(TrainingProviderMapper).Assembly));
-            Mapper = new AutoMapper.Mapper(mapperConfig);            
-            
+            LoggerFactory = Substitute.For<ILoggerFactory>();
+
+            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(TrainingProviderMapper).Assembly), LoggerFactory);
+            Mapper = new AutoMapper.Mapper(mapperConfig);
+
             Loader = new TrainingProviderLoader(InternalApiClient, Mapper);
         }
     }

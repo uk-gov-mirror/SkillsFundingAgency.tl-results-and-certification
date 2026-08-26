@@ -19,10 +19,11 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.AssessmentLoaderTe
         protected Guid BlobUniqueReference;
         protected ComponentType ComponentType;
         protected IMapper Mapper;
+        protected ILoggerFactory LoggerFactory;
         protected ILogger<AssessmentLoader> Logger;
         protected IBlobStorageService BlobStorageService;
         protected IResultsAndCertificationInternalApiClient InternalApiClient;
-        protected AssessmentLoader Loader;        
+        protected AssessmentLoader Loader;
         protected Stream ActualResult;
 
         public override void Setup()
@@ -30,14 +31,15 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.AssessmentLoaderTe
             Logger = Substitute.For<ILogger<AssessmentLoader>>();
             BlobStorageService = Substitute.For<IBlobStorageService>();
             InternalApiClient = Substitute.For<IResultsAndCertificationInternalApiClient>();
+            LoggerFactory = Substitute.For<ILoggerFactory>();
 
-            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(AssessmentMapper).Assembly));
+            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(AssessmentMapper).Assembly), LoggerFactory);
             Mapper = new AutoMapper.Mapper(mapperConfig);
 
             Loader = new AssessmentLoader(Mapper, Logger, InternalApiClient, BlobStorageService);
         }
 
-        public async override Task When()
+        public override async Task When()
         {
             ActualResult = await Loader.GetAssessmentsDataFileAsync(AoUkprn, BlobUniqueReference, ComponentType);
         }

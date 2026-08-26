@@ -24,6 +24,7 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.RegistrationLoader
         protected readonly int ProviderUkprn = 987654321;
         protected IResultsAndCertificationInternalApiClient InternalApiClient;
         protected IMapper Mapper;
+        protected ILoggerFactory LoggerFactory;
         protected ILogger<RegistrationLoader> Logger;
         protected RegistrationLoader Loader;
         protected IBlobStorageService BlobStorageService;
@@ -57,6 +58,7 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.RegistrationLoader
             BlobStorageService = Substitute.For<IBlobStorageService>();
             InternalApiClient = Substitute.For<IResultsAndCertificationInternalApiClient>();
             InternalApiClient.AddRegistrationAsync(Arg.Any<RegistrationRequest>()).Returns(ApiClientResponse);
+            LoggerFactory = Substitute.For<ILoggerFactory>();
 
             HttpContextAccessor = Substitute.For<IHttpContextAccessor>();
             HttpContextAccessor.HttpContext.Returns(new DefaultHttpContext
@@ -75,7 +77,7 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.RegistrationLoader
                 c.ConstructServicesUsing(type =>
                             type.Name.Contains("UserNameResolver") ?
                                 new UserNameResolver<RegistrationViewModel, RegistrationRequest>(HttpContextAccessor) : null);
-            });
+            }, LoggerFactory);
             Mapper = new AutoMapper.Mapper(mapperConfig);
         }
 
@@ -84,7 +86,7 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.RegistrationLoader
             Loader = new RegistrationLoader(Mapper, Logger, InternalApiClient, BlobStorageService);
         }
 
-        public async override Task When()
+        public override async Task When()
         {
             ActualResult = await Loader.AddRegistrationAsync(AoUkprn, RegistrationViewModel);
         }

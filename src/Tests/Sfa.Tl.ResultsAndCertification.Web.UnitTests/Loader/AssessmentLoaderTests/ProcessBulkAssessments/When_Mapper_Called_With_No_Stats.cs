@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using NSubstitute;
 using Sfa.Tl.ResultsAndCertification.Common.Enum;
 using Sfa.Tl.ResultsAndCertification.Models.Contracts;
@@ -16,12 +17,14 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.AssessmentLoaderTe
 {
     public class When_Mapper_Called_With_No_Stats : TestSetup
     {
+        protected ILoggerFactory LoggerFactory;
         private readonly string _givename = "test";
         private readonly string _surname = "user";
         private readonly string _email = "test.user@test.com";
 
         public override void Given()
         {
+            LoggerFactory = Substitute.For<ILoggerFactory>();
             HttpContextAccessor = Substitute.For<IHttpContextAccessor>();
             HttpContextAccessor.HttpContext.Returns(new DefaultHttpContext
             {
@@ -33,7 +36,7 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.AssessmentLoaderTe
                 }))
             });
 
-            CreateMapper();
+            CreateMapper(LoggerFactory);
 
             BulkAssessmentRequest = new BulkProcessRequest { AoUkprn = Ukprn };
 
@@ -68,7 +71,7 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.AssessmentLoaderTe
             uploadAssessmentsResponseMapperResult.ErrorFileSize.Should().Be(BulkAssessmentResponse.ErrorFileSize);
         }
 
-        protected void CreateMapper()
+        protected void CreateMapper(ILoggerFactory loggerFactory)
         {
             var mapperConfig = new MapperConfiguration(c =>
             {
@@ -78,7 +81,7 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.AssessmentLoaderTe
                                 new UserNameResolver<UploadAssessmentsRequestViewModel, BulkProcessRequest>(HttpContextAccessor) :
                                 type.Name.Contains("UserEmailResolver") ? (object)new UserEmailResolver<UploadAssessmentsRequestViewModel, BulkProcessRequest>(HttpContextAccessor) :
                                 null);
-            });
+            }, loggerFactory);
             Mapper = new AutoMapper.Mapper(mapperConfig);
         }
     }

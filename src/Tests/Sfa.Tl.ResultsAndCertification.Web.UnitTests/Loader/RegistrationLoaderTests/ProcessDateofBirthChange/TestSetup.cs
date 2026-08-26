@@ -21,6 +21,7 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.RegistrationLoader
         protected IResultsAndCertificationInternalApiClient InternalApiClient;
         protected IMapper Mapper;
         protected ILogger<RegistrationLoader> Logger;
+        protected ILoggerFactory LoggerFactory;
         public IBlobStorageService BlobStorageService { get; private set; }
 
         protected RegistrationLoader Loader;
@@ -49,19 +50,20 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.RegistrationLoader
                 }))
             });
 
+            LoggerFactory = Substitute.For<ILoggerFactory>();
             var mapperConfig = new MapperConfiguration(c =>
             {
                 c.AddMaps(typeof(RegistrationMapper).Assembly);
                 c.ConstructServicesUsing(type =>
                             type.Name.Contains("UserNameResolver") ?
                                 new UserNameResolver<ChangeDateofBirthViewModel, ManageRegistration>(HttpContextAccessor) : null);
-            });
+            }, LoggerFactory);
 
             Mapper = new AutoMapper.Mapper(mapperConfig);
             Loader = new RegistrationLoader(Mapper, Logger, InternalApiClient, BlobStorageService);
         }
 
-        public async override Task When()
+        public override async Task When()
         {
             ActualResult = await Loader.ProcessDateofBirthChangeAsync(AoUkprn, ViewModel);
         }

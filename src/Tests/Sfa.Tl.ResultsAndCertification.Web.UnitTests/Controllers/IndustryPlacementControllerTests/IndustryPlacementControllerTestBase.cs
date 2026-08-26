@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
@@ -21,6 +22,8 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Controllers.IndustryPlace
     {
         // Dependencies
         protected IMapper Mapper;
+
+        protected ILoggerFactory LoggerFactory;
         protected IIndustryPlacementLoader IndustryPlacementLoader;
         protected ICacheService CacheService;
         protected ILogger<IndustryPlacementController> Logger;
@@ -39,6 +42,7 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Controllers.IndustryPlace
         public override void Setup()
         {
             IndustryPlacementLoader = Substitute.For<IIndustryPlacementLoader>();
+            LoggerFactory = Substitute.For<ILoggerFactory>();
             CacheService = Substitute.For<ICacheService>();
             Logger = Substitute.For<ILogger<IndustryPlacementController>>();
             Controller = new IndustryPlacementController(IndustryPlacementLoader, CacheService, Logger);
@@ -53,7 +57,7 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Controllers.IndustryPlace
             HttpContextAccessor = Substitute.For<IHttpContextAccessor>();
             HttpContextAccessor.HttpContext.Returns(HttpContext);
 
-            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(IndustryPlacementMapper).Assembly));
+            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(IndustryPlacementMapper).Assembly), LoggerFactory);
             Mapper = new AutoMapper.Mapper(mapperConfig);
 
             CacheKey = CacheKeyHelper.GetCacheKey(HttpContext.User.GetUserId(), CacheConstants.IpCacheKey);

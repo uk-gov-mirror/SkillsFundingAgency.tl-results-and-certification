@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Microsoft.Extensions.Logging;
+using NSubstitute;
 using Sfa.Tl.ResultsAndCertification.Models.Contracts.TrainingProvider;
 using Sfa.Tl.ResultsAndCertification.Web.Mapper;
 using Sfa.Tl.ResultsAndCertification.Web.Mapper.Resolver;
@@ -13,7 +15,7 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.TrainingProviderTe
         protected RequestReplacementDocumentViewModel RequestReplacementDocumentViewModel { get; set; }
         protected bool ActualResult { get; set; }
 
-        public async override Task When()
+        public override async Task When()
         {
             ActualResult = await Loader.CreateReplacementDocumentPrintingRequestAsync(ProviderUkprn, RequestReplacementDocumentViewModel);
         }
@@ -26,8 +28,7 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.TrainingProviderTe
                 c.ConstructServicesUsing(type =>
                             type.Name.Contains("UserNameResolver") ?
                                 new UserNameResolver<RequestReplacementDocumentViewModel, ReplacementPrintRequest>(HttpContextAccessor) : null);
-
-            });
+            }, LoggerFactory);
             Mapper = new AutoMapper.Mapper(mapperConfig);
         }
     }

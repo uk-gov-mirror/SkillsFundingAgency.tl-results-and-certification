@@ -31,11 +31,11 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.TlevelLoaderTests.
                 c.ConstructServicesUsing(type =>
                             type.Name.Contains("UserNameResolver") ?
                                 new UserNameResolver<TlevelPathwayDetails, TLevelConfirmedDetailsViewModel>(HttpContextAccessor) : null);
-            });
+            }, LoggerFactory);
             Mapper = new AutoMapper.Mapper(mapperConfig);
         }
 
-        public async override Task When()
+        public override async Task When()
         {
             _actualResult = await Loader.GetTlevelDetailsByPathwayIdAsync(Ukprn, Id);
         }

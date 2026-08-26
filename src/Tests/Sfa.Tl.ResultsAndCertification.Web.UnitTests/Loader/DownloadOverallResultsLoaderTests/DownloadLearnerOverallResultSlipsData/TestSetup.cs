@@ -16,6 +16,7 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.DownloadOverallRes
         protected readonly long providerUkprn = 12345678;
         protected string RequestedBy = "System";
         protected IMapper Mapper;
+        protected ILoggerFactory LoggerFactory;
         protected ILogger<DownloadOverallResultsLoader> Logger;
         protected IBlobStorageService BlobStorageService;
         protected IResultsAndCertificationInternalApiClient InternalApiClient;
@@ -29,14 +30,15 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.DownloadOverallRes
             Logger = Substitute.For<ILogger<DownloadOverallResultsLoader>>();
             BlobStorageService = Substitute.For<IBlobStorageService>();
             InternalApiClient = Substitute.For<IResultsAndCertificationInternalApiClient>();
+            LoggerFactory = Substitute.For<ILoggerFactory>();
 
-            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(AssessmentMapper).Assembly));
+            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(AssessmentMapper).Assembly), LoggerFactory);
             Mapper = new AutoMapper.Mapper(mapperConfig);
 
             Loader = new DownloadOverallResultsLoader(InternalApiClient, BlobStorageService, Logger);
         }
 
-        public async override Task When()
+        public override async Task When()
         {
             ActualResult = await Loader.DownloadLearnerOverallResultSlipsDataAsync(providerUkprn, ProfileId, RequestedBy);
         }

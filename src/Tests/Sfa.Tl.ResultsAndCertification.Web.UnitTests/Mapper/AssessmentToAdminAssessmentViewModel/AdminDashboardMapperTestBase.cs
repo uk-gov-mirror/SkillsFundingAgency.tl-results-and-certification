@@ -1,20 +1,22 @@
 ﻿using AutoMapper;
+using Microsoft.Extensions.Logging;
 using NSubstitute;
 using Sfa.Tl.ResultsAndCertification.Common.Helpers;
 using Sfa.Tl.ResultsAndCertification.Common.Services.System.Interface;
 using Sfa.Tl.ResultsAndCertification.Models.Contracts.Learner;
 using Sfa.Tl.ResultsAndCertification.Tests.Common.BaseTest;
 using Sfa.Tl.ResultsAndCertification.Web.Mapper;
+using Sfa.Tl.ResultsAndCertification.Web.Mapper.Resolver.AdminAssessmentResult;
 using Sfa.Tl.ResultsAndCertification.Web.ViewModel.AdminDashboard.LearnerRecord;
 using System;
 using System.Threading.Tasks;
-using Sfa.Tl.ResultsAndCertification.Web.Mapper.Resolver.AdminAssessmentResult;
 
 namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Mapper.AssessmentToAdminAssessmentViewModel
 {
     public abstract class AdminDashboardMapperTestBase : BaseTest<AdminDashboardMapper>
     {
         protected IMapper Mapper;
+        protected ILoggerFactory LoggerFactory;
         private ISystemProvider _systemProvider;
 
         protected int RegistrationPathwayId;
@@ -26,6 +28,8 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Mapper.AssessmentToAdminA
         public void Setup(int registrationPathwayId, DateTime today, Assessment source)
         {
             _systemProvider = Substitute.For<ISystemProvider>();
+
+            LoggerFactory = Substitute.For<ILoggerFactory>();
 
             MapperConfiguration configuration = new(cfg =>
             {
@@ -45,7 +49,7 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Mapper.AssessmentToAdminA
                         return null;
                     }
                 });
-            });
+            }, LoggerFactory);
 
             Mapper = configuration.CreateMapper();
 

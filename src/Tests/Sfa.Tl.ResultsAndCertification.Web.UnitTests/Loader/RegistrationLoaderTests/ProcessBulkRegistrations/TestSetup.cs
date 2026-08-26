@@ -20,6 +20,7 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.RegistrationLoader
         protected IHttpContextAccessor HttpContextAccessor;
         protected IResultsAndCertificationInternalApiClient InternalApiClient;
         protected IMapper Mapper;
+        protected ILoggerFactory LoggerFactory;
         protected ILogger<RegistrationLoader> Logger;
         protected IRegistrationLoader Loader;
         protected IBlobStorageService BlobStorageService;
@@ -36,6 +37,7 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.RegistrationLoader
         protected readonly string Surname = "user";
         protected readonly string Email = "test.user@test.com";
         protected Guid BlobUniqueReference;
+
         public override void Setup()
         {
             Mapper = Substitute.For<IMapper>();
@@ -43,12 +45,13 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.RegistrationLoader
             InternalApiClient = Substitute.For<IResultsAndCertificationInternalApiClient>();
             BlobStorageService = Substitute.For<IBlobStorageService>();
             FormFile = Substitute.For<IFormFile>();
+            LoggerFactory = Substitute.For<ILoggerFactory>();
             BlobUniqueReference = Guid.NewGuid();
             BulkRegistrationRequest = new BulkProcessRequest { AoUkprn = Ukprn };
         }
 
         public override void Given()
-        {          
+        {
             BulkRegistrationResponse = new BulkProcessResponse
             {
                 IsSuccess = false,
@@ -71,7 +74,7 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.RegistrationLoader
             Loader = new RegistrationLoader(Mapper, Logger, InternalApiClient, BlobStorageService);
         }
 
-        public async override Task When()
+        public override async Task When()
         {
             ActualResult = await Loader.ProcessBulkRegistrationsAsync(UploadRegistrationsRequestViewModel);
         }

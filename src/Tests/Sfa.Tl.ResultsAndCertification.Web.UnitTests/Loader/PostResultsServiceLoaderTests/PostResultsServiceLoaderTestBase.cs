@@ -22,8 +22,10 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.PostResultsService
 
         // Dependencies
         protected IResultsAndCertificationInternalApiClient InternalApiClient;
+
         private readonly IBlobStorageService BlobStorageService;
         protected IMapper Mapper;
+        protected ILoggerFactory LoggerFactory;
         protected IHttpContextAccessor HttpContextAccessor;
         protected PostResultsServiceLoader Loader;
         protected ILogger<PostResultsServiceLoader> Logger;
@@ -49,6 +51,7 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.PostResultsService
 
         public virtual void CreateMapper()
         {
+            LoggerFactory = Substitute.For<ILoggerFactory>();
             var mapperConfig = new MapperConfiguration(c =>
             {
                 c.AddMaps(typeof(PostResultsServiceMapper).Assembly);
@@ -57,7 +60,7 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.PostResultsService
                                 new UserNameResolver<PrsAddAppealViewModel, PrsActivityRequest>(HttpContextAccessor) :
                                  type.Name.Contains("UserEmailResolver") ? (object)new UserEmailResolver<PrsGradeChangeRequestViewModel, Models.Contracts.PostResultsService.PrsGradeChangeRequest>(HttpContextAccessor) :
                                 null);
-            });
+            }, LoggerFactory);
             Mapper = new AutoMapper.Mapper(mapperConfig);
         }
     }

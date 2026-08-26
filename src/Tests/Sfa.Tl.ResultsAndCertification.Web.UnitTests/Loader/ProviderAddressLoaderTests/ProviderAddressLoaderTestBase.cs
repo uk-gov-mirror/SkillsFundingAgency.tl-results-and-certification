@@ -19,15 +19,18 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.ProviderAddressLoa
 
         // Dependencies
         protected IResultsAndCertificationInternalApiClient InternalApiClient;
+
         protected IOrdnanceSurveyApiClient OrdnanceSurveyApiClient;
         protected IMapper Mapper;
         protected ILogger<ProviderAddressLoader> Logger;
         protected IHttpContextAccessor HttpContextAccessor;
         protected ProviderAddressLoader Loader;
+        protected ILoggerFactory LoggerFactory;
 
         public override void Setup()
         {
             HttpContextAccessor = Substitute.For<IHttpContextAccessor>();
+            LoggerFactory = Substitute.For<ILoggerFactory>();
             HttpContextAccessor.HttpContext.Returns(new DefaultHttpContext
             {
                 User = new ClaimsPrincipal(new ClaimsIdentity(new[]
@@ -41,7 +44,7 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.ProviderAddressLoa
             InternalApiClient = Substitute.For<IResultsAndCertificationInternalApiClient>();
             OrdnanceSurveyApiClient = Substitute.For<IOrdnanceSurveyApiClient>();
 
-            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(ProviderAddressMapper).Assembly));
+            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(ProviderAddressMapper).Assembly), LoggerFactory);
             Mapper = new AutoMapper.Mapper(mapperConfig);
             Logger = Substitute.For<ILogger<ProviderAddressLoader>>();
             Loader = new ProviderAddressLoader(InternalApiClient, OrdnanceSurveyApiClient, Mapper, Logger);

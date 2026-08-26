@@ -18,12 +18,14 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.ResultLoaderTests.
     {
         // Dependenices
         protected IResultsAndCertificationInternalApiClient InternalApiClient;
+
         protected IMapper Mapper;
+        protected ILoggerFactory LoggerFactory;
         protected ILogger<ResultLoader> Logger;
         public IBlobStorageService BlobStorageService { get; private set; }
 
         protected readonly int ProfileId = 1;
-        protected readonly long AoUkprn = 12345678; 
+        protected readonly long AoUkprn = 12345678;
         protected ResultLoader Loader;
         protected ManageCoreResultViewModel ViewModel = new ManageCoreResultViewModel { ProfileId = 1, ResultId = 1, SelectedGradeCode = "PCG1" };
         protected bool? ActualResult;
@@ -36,14 +38,15 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.ResultLoaderTests.
             Logger = Substitute.For<ILogger<ResultLoader>>();
             BlobStorageService = Substitute.For<IBlobStorageService>();
             InternalApiClient = Substitute.For<IResultsAndCertificationInternalApiClient>();
+            LoggerFactory = Substitute.For<ILoggerFactory>();
 
-            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(ResultMapper).Assembly));
+            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(ResultMapper).Assembly), LoggerFactory);
             Mapper = new AutoMapper.Mapper(mapperConfig);
 
             Loader = new ResultLoader(Mapper, Logger, InternalApiClient, BlobStorageService);
         }
 
-        public async override Task When()
+        public override async Task When()
         {
             ActualResult = await Loader.IsCoreResultChangedAsync(AoUkprn, ViewModel);
         }

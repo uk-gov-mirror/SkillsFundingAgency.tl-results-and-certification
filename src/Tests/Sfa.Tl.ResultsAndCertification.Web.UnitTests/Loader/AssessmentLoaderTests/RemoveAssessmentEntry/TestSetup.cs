@@ -24,6 +24,7 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.AssessmentLoaderTe
         protected AssessmentEntryDetailsViewModel ViewModel;
 
         protected IMapper Mapper;
+        protected ILoggerFactory LoggerFactory;
         protected ILogger<AssessmentLoader> Logger;
         protected IBlobStorageService BlobStorageService;
         protected IResultsAndCertificationInternalApiClient InternalApiClient;
@@ -40,6 +41,7 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.AssessmentLoaderTe
             Logger = Substitute.For<ILogger<AssessmentLoader>>();
             BlobStorageService = Substitute.For<IBlobStorageService>();
             InternalApiClient = Substitute.For<IResultsAndCertificationInternalApiClient>();
+            LoggerFactory = Substitute.For<ILoggerFactory>();
 
             HttpContextAccessor = Substitute.For<IHttpContextAccessor>();
             HttpContextAccessor.HttpContext.Returns(new DefaultHttpContext
@@ -58,14 +60,14 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.AssessmentLoaderTe
                 c.ConstructServicesUsing(type =>
                             type.Name.Contains("UserNameResolver") ?
                                 new UserNameResolver<AssessmentEntryDetailsViewModel, RemoveAssessmentEntryRequest>(HttpContextAccessor) : null);
-            });
+            }, LoggerFactory);
 
             ActualResult = false;
             Mapper = new AutoMapper.Mapper(mapperConfig);
             Loader = new AssessmentLoader(Mapper, Logger, InternalApiClient, BlobStorageService);
         }
 
-        public async override Task When()
+        public override async Task When()
         {
             ActualResult = await Loader.RemoveAssessmentEntryAsync(AoUkprn, ViewModel);
         }

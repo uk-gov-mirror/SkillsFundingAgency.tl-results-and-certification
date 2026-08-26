@@ -25,6 +25,7 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.RegistrationLoader
         protected long Uln;
         protected bool ApiClientResponse;
         protected IMapper Mapper;
+        protected ILoggerFactory LoggerFactory;
         protected ILogger<RegistrationLoader> Logger;
         protected IResultsAndCertificationInternalApiClient InternalApiClient;
         protected RegistrationLoader Loader;
@@ -38,6 +39,7 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.RegistrationLoader
             Logger = Substitute.For<ILogger<RegistrationLoader>>();
             BlobStorageService = Substitute.For<IBlobStorageService>();
             InternalApiClient = Substitute.For<IResultsAndCertificationInternalApiClient>();
+            LoggerFactory = Substitute.For<ILoggerFactory>();
 
             HttpContextAccessor = Substitute.For<IHttpContextAccessor>();
             HttpContextAccessor.HttpContext.Returns(new DefaultHttpContext
@@ -56,7 +58,7 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.RegistrationLoader
                 c.ConstructServicesUsing(type =>
                             type.Name.Contains("UserNameResolver") ?
                                 new UserNameResolver<WithdrawRegistrationViewModel, WithdrawRegistrationRequest>(HttpContextAccessor) : null);
-            });
+            }, LoggerFactory);
 
             Uln = 123456789;
             ProfileId = 1;
@@ -64,7 +66,7 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.RegistrationLoader
             Loader = new RegistrationLoader(Mapper, Logger, InternalApiClient, BlobStorageService);
         }
 
-        public async override Task When()
+        public override async Task When()
         {
             ActualResult = await Loader.WithdrawRegistrationAsync(AoUkprn, ViewModel);
         }

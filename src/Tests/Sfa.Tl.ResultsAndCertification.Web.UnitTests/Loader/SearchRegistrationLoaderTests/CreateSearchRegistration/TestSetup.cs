@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.Extensions.Logging;
 using NSubstitute;
 using Sfa.Tl.ResultsAndCertification.Api.Client.Interfaces;
 using Sfa.Tl.ResultsAndCertification.Models.Contracts.Common;
@@ -15,6 +16,7 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.SearchRegistration
     public abstract class TestSetup : BaseTest<SearchRegistrationLoader>
     {
         protected IResultsAndCertificationInternalApiClient InternalApiClient;
+        protected ILoggerFactory LoggerFactory;
         protected SearchRegistrationLoader Loader;
 
         protected SearchRegistrationFilters Filters = new()
@@ -63,13 +65,14 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.SearchRegistration
         public override void Setup()
         {
             InternalApiClient = Substitute.For<IResultsAndCertificationInternalApiClient>();
+            LoggerFactory = Substitute.For<ILoggerFactory>();
 
-            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(SearchRegistrationMapper).Assembly));
+            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(SearchRegistrationMapper).Assembly), LoggerFactory);
             IMapper mapper = new AutoMapper.Mapper(mapperConfig);
             Loader = new SearchRegistrationLoader(InternalApiClient, mapper);
         }
 
-        public async override Task When()
+        public override async Task When()
         {
             Result = await Loader.CreateSearchRegistration(SearchRegistrationType);
         }

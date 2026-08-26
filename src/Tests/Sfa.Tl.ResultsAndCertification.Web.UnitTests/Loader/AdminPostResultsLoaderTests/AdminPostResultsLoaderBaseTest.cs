@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.Extensions.Logging;
 using NSubstitute;
 using Sfa.Tl.ResultsAndCertification.Api.Client.Interfaces;
 using Sfa.Tl.ResultsAndCertification.Common.Enum;
@@ -17,12 +18,14 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.AdminPostResultsLo
     {
         protected IResultsAndCertificationInternalApiClient ApiClient;
         protected AdminPostResultsLoader Loader;
+        protected ILoggerFactory LoggerFactory;
 
         public override void Setup()
         {
             ApiClient = Substitute.For<IResultsAndCertificationInternalApiClient>();
+            LoggerFactory = Substitute.For<ILoggerFactory>();
 
-            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(AdminChangeLogMapper).Assembly));
+            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(AdminChangeLogMapper).Assembly), LoggerFactory);
             var mapper = new AutoMapper.Mapper(mapperConfig);
 
             Loader = new AdminPostResultsLoader(ApiClient, mapper);

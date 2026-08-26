@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Microsoft.Extensions.Logging;
+using NSubstitute;
 using Sfa.Tl.ResultsAndCertification.Common.Enum;
 using Sfa.Tl.ResultsAndCertification.Models.Contracts.TrainingProvider;
 using Sfa.Tl.ResultsAndCertification.Web.Mapper;
@@ -11,13 +13,15 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Mapper
     public class When_MapLearnerRecordDetailsToIpCompletionViewModel_Is_Called
     {
         private readonly IMapper _mapper;
+        protected ILoggerFactory LoggerFactory;
 
         public When_MapLearnerRecordDetailsToIpCompletionViewModel_Is_Called()
         {
+            LoggerFactory = Substitute.For<ILoggerFactory>();
             MapperConfiguration configuration = new(cfg =>
             {
                 cfg.AddProfile<IndustryPlacementMapper>();
-            });
+            }, LoggerFactory);
 
             _mapper = configuration.CreateMapper();
         }
@@ -56,7 +60,6 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Mapper
             Assert.Equal(ipCompletionViewModel.CompletionAcademicYear, expectedIpCompletionModel.CompletionAcademicYear);
             Assert.Equal(ipCompletionViewModel.LearnerName, expectedIpCompletionModel.LearnerName);
             Assert.Equal(ipCompletionViewModel.IndustryPlacementStatus, expectedIpCompletionModel.IndustryPlacementStatus);
-
         }
 
         private static LearnerRecordDetails CreateLearnerRecordDetails(

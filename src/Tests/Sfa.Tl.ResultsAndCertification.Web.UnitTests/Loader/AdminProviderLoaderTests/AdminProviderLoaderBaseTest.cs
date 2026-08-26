@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using NSubstitute;
 using Sfa.Tl.ResultsAndCertification.Api.Client.Interfaces;
 using Sfa.Tl.ResultsAndCertification.Models.Contracts.AdminProvider;
@@ -15,14 +16,16 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.AdminProviderLoade
     {
         protected IResultsAndCertificationInternalApiClient ApiClient;
         protected AdminProviderLoader Loader;
+        protected ILoggerFactory LoggerFactory;
 
         public override void Setup()
         {
             ApiClient = Substitute.For<IResultsAndCertificationInternalApiClient>();
-            Loader = new AdminProviderLoader(ApiClient, CreateMapper());
+            LoggerFactory = Substitute.For<ILoggerFactory>();
+            Loader = new AdminProviderLoader(ApiClient, CreateMapper(LoggerFactory));
         }
 
-        private static AutoMapper.Mapper CreateMapper()
+        private static AutoMapper.Mapper CreateMapper(ILoggerFactory loggerFactory)
         {
             IHttpContextAccessor httpContextAccessor = Substitute.For<IHttpContextAccessor>();
 
@@ -55,7 +58,7 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.AdminProviderLoade
                         return null;
                     }
                 });
-            });
+            }, loggerFactory);
 
             return new AutoMapper.Mapper(mapperConfig);
         }

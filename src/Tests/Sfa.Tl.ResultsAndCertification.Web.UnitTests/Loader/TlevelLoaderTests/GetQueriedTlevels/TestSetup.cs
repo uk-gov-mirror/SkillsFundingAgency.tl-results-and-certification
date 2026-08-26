@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.Extensions.Logging;
 using NSubstitute;
 using Sfa.Tl.ResultsAndCertification.Api.Client.Interfaces;
 using Sfa.Tl.ResultsAndCertification.Common.Enum;
@@ -16,6 +17,7 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.TlevelLoaderTests.
     {
         protected IResultsAndCertificationInternalApiClient InternalApiClient;
         protected IMapper Mapper;
+        protected ILoggerFactory LoggerFactory;
         protected TlevelLoader Loader;
         protected readonly long Ukprn = 1024;
         protected int PathwayId = 1;
@@ -32,12 +34,12 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.TlevelLoaderTests.
             ApiClientResponse = new List<AwardingOrganisationPathwayStatus> { ExpectedResult };
 
             InternalApiClient = Substitute.For<IResultsAndCertificationInternalApiClient>();
+            LoggerFactory = Substitute.For<ILoggerFactory>();
             InternalApiClient.GetTlevelsByStatusIdAsync(Ukprn, (int)TlevelReviewStatus.Queried)
                 .Returns(ApiClientResponse);
 
-            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(TlevelMapper).Assembly));
+            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(TlevelMapper).Assembly), LoggerFactory);
             Mapper = new AutoMapper.Mapper(mapperConfig);
-
         }
 
         public override void Given()
@@ -45,7 +47,7 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.TlevelLoaderTests.
             Loader = new TlevelLoader(InternalApiClient, Mapper);
         }
 
-        public async override Task When()
+        public override async Task When()
         {
             ActualResult = await Loader.GetQueriedTlevelsViewModelAsync(Ukprn);
         }

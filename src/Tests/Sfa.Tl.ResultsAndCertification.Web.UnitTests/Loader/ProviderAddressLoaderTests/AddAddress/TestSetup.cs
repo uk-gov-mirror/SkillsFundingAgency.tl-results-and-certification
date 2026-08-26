@@ -13,7 +13,7 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.ProviderAddressLoa
         protected AddAddressViewModel AddAddressViewModel { get; set; }
         protected bool ActualResult { get; set; }
 
-        public async override Task When()
+        public override async Task When()
         {
             ActualResult = await Loader.AddAddressAsync(ProviderUkprn, AddAddressViewModel);
         }
@@ -28,8 +28,7 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.ProviderAddressLoa
                                 new UserNameResolver<AddAddressViewModel, AddAddressRequest>(HttpContextAccessor) :
                                 type.Name.Contains("UserEmailResolver") ?
                                 (object)new UserEmailResolver<AddAddressViewModel, AddAddressRequest>(HttpContextAccessor) : null);
-
-            });
+            }, LoggerFactory);
             Mapper = new AutoMapper.Mapper(mapperConfig);
         }
     }

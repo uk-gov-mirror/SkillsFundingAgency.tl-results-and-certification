@@ -29,6 +29,7 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.ResultLoaderTests.
         protected IResultsAndCertificationInternalApiClient InternalApiClient;
         protected ResultLoader Loader;
         protected ChangeResultResponse ActualResult;
+        protected ILoggerFactory LoggerFactory;
 
         protected IHttpContextAccessor HttpContextAccessor;
         protected readonly string Givenname = "test";
@@ -40,6 +41,7 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.ResultLoaderTests.
             Logger = Substitute.For<ILogger<ResultLoader>>();
             BlobStorageService = Substitute.For<IBlobStorageService>();
             InternalApiClient = Substitute.For<IResultsAndCertificationInternalApiClient>();
+            LoggerFactory = Substitute.For<ILoggerFactory>();
 
             HttpContextAccessor = Substitute.For<IHttpContextAccessor>();
             HttpContextAccessor.HttpContext.Returns(new DefaultHttpContext
@@ -58,13 +60,13 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.ResultLoaderTests.
                 c.ConstructServicesUsing(type =>
                             type.Name.Contains("UserNameResolver") ?
                                 new UserNameResolver<ManageCoreResultViewModel, ChangeResultRequest>(HttpContextAccessor) : null);
-            });
+            }, LoggerFactory);
 
             Mapper = new AutoMapper.Mapper(mapperConfig);
             Loader = new ResultLoader(Mapper, Logger, InternalApiClient, BlobStorageService);
         }
 
-        public async override Task When()
+        public override async Task When()
         {
             ActualResult = await Loader.ChangeCoreResultAsync(AoUkprn, ViewModel);
         }

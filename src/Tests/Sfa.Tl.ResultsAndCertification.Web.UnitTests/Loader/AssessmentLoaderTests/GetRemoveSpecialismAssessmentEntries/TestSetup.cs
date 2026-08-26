@@ -25,20 +25,22 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.AssessmentLoaderTe
         protected AssessmentEntryDetails ExpectedApiResult;
         protected RemoveSpecialismAssessmentEntryViewModel ActualResult;
         protected string SpecialismAssessmentIds;
+        protected ILoggerFactory LoggerFactory;
 
         public override void Setup()
         {
             Logger = Substitute.For<ILogger<AssessmentLoader>>();
             BlobStorageService = Substitute.For<IBlobStorageService>();
             InternalApiClient = Substitute.For<IResultsAndCertificationInternalApiClient>();
+            LoggerFactory = Substitute.For<ILoggerFactory>();
 
-            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(AssessmentMapper).Assembly));
+            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(AssessmentMapper).Assembly), LoggerFactory);
             Mapper = new AutoMapper.Mapper(mapperConfig);
 
             Loader = new AssessmentLoader(Mapper, Logger, InternalApiClient, BlobStorageService);
         }
 
-        public async override Task When()
+        public override async Task When()
         {
             ActualResult = await Loader.GetRemoveSpecialismAssessmentEntriesAsync(AoUkprn, ProfileId, SpecialismAssessmentIds);
         }

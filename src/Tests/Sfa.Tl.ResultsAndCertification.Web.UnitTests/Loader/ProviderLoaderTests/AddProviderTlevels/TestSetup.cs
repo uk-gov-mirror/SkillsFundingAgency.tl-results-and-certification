@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using NSubstitute;
 using Sfa.Tl.ResultsAndCertification.Api.Client.Interfaces;
 using Sfa.Tl.ResultsAndCertification.Models.Contracts;
@@ -19,6 +20,7 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.ProviderLoaderTest
         protected IHttpContextAccessor HttpContextAccessor;
         protected IResultsAndCertificationInternalApiClient InternalApiClient;
         protected IMapper Mapper;
+        protected ILoggerFactory LoggerFactory;
         protected ProviderLoader Loader;
         protected readonly long Ukprn = 12345678;
         protected readonly int ProviderId = 1;
@@ -52,6 +54,7 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.ProviderLoaderTest
             };
 
             HttpContextAccessor = Substitute.For<IHttpContextAccessor>();
+            LoggerFactory = Substitute.For<ILoggerFactory>();
             HttpContextAccessor.HttpContext.Returns(new DefaultHttpContext
             {
                 User = new ClaimsPrincipal(new ClaimsIdentity(new[]
@@ -68,20 +71,20 @@ namespace Sfa.Tl.ResultsAndCertification.Web.UnitTests.Loader.ProviderLoaderTest
                 c.ConstructServicesUsing(type =>
                             type.Name.Contains("UserNameResolver") ?
                                 new UserNameResolver<ProviderTlevelViewModel, ProviderTlevel>(HttpContextAccessor) : null);
-            });
+            }, LoggerFactory);
             Mapper = new AutoMapper.Mapper(mapperConfig);
             InternalApiClient = Substitute.For<IResultsAndCertificationInternalApiClient>();
         }
 
         public override void Given()
         {
-            ExpectedResult = true;            
+            ExpectedResult = true;
             InternalApiClient.AddProviderTlevelsAsync(Arg.Any<List<ProviderTlevel>>())
                 .Returns(ExpectedResult);
             Loader = new ProviderLoader(InternalApiClient, Mapper);
         }
 
-        public async override Task When()
+        public override async Task When()
         {
             ActualResult = await Loader.AddProviderTlevelsAsync(ProviderTlevelsViewModel);
         }
