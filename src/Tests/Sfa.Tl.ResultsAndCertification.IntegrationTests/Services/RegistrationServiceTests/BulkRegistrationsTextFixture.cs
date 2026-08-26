@@ -81,6 +81,8 @@ namespace Sfa.Tl.ResultsAndCertification.IntegrationTests.Services.RegistrationS
         protected ILogger<GenericRepository<ChangeLog>> ChangeLogRepositoryLogger;
         protected IRepository<ChangeLog> ChangeLogRepository;
 
+        protected ILoggerFactory LoggerFactory;
+
         public BulkRegistrationsTextFixture()
         {
             DbCheckpoint = new Checkpoint { WithReseed = true };
@@ -126,10 +128,12 @@ namespace Sfa.Tl.ResultsAndCertification.IntegrationTests.Services.RegistrationS
 
         protected void CreateMapper()
         {
-            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(RegistrationMapper).Assembly));
+            LoggerFactory = Substitute.For<ILoggerFactory>();
+
+            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(RegistrationMapper).Assembly), LoggerFactory);
             RegistrationMapper = new Mapper(mapperConfig);
 
-            var commonMapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(CommonMapper).Assembly));
+            var commonMapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(CommonMapper).Assembly), LoggerFactory);
             CommonMapper = new Mapper(commonMapperConfig);
         }
 
@@ -184,7 +188,6 @@ namespace Sfa.Tl.ResultsAndCertification.IntegrationTests.Services.RegistrationS
             }
 
             tqRegistrationPathway.IsBulkUpload = isBulkUpload;
-
 
             foreach (var specialism in TlSpecialisms)
             {

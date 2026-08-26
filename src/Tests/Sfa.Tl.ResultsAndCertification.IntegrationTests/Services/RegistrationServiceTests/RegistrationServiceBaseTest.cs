@@ -57,16 +57,21 @@ namespace Sfa.Tl.ResultsAndCertification.IntegrationTests.Services.RegistrationS
         protected IMapper RegistrationMapper;
         protected ILogger<GenericRepository<ChangeLog>> ChangeLogRepositoryLogger;
         protected IRepository<ChangeLog> ChangeLogRepository;
+
+        protected ILoggerFactory LoggerFactory;
+
         protected virtual void CreateMapper()
         {
-            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(RegistrationMapper).Assembly));
+            LoggerFactory = Substitute.For<ILoggerFactory>();
+            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(RegistrationMapper).Assembly), LoggerFactory);
             RegistrationMapper = new Mapper(mapperConfig);
         }
 
         protected void CreateCommonService()
         {
+            LoggerFactory = Substitute.For<ILoggerFactory>();
             var commonServiceLogger = new Logger<CommonService>(new NullLoggerFactory());
-            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(CommonMapper).Assembly));
+            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(CommonMapper).Assembly), LoggerFactory);
             var commonMapper = new Mapper(mapperConfig);
             var systemProvider = Substitute.For<ISystemProvider>();
 
@@ -271,7 +276,6 @@ namespace Sfa.Tl.ResultsAndCertification.IntegrationTests.Services.RegistrationS
             return tqSpecialismResults;
         }
 
-
         public List<TqPathwayResult> SeedPathwayResultsData(List<TqPathwayResult> pathwayResults, bool saveChanges = true)
         {
             var tqPathwayResults = TqPathwayResultDataProvider.CreateTqPathwayResults(DbContext, pathwayResults);
@@ -315,7 +319,6 @@ namespace Sfa.Tl.ResultsAndCertification.IntegrationTests.Services.RegistrationS
                     tqSpecialismAssessment.EndDate = DateTime.UtcNow;
                 }
                 tqSpecialismAssessments.Add(tqSpecialismAssessment);
-
             }
             return tqSpecialismAssessments;
         }

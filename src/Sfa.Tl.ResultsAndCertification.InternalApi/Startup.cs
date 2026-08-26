@@ -56,6 +56,7 @@ namespace Sfa.Tl.ResultsAndCertification.InternalApi
             Configuration = configuration;
             _env = env;
         }
+
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -132,7 +133,8 @@ namespace Sfa.Tl.ResultsAndCertification.InternalApi
                                       .EnableRetryOnFailure()), ServiceLifetime.Transient);
 
             services.AddSingleton(ResultsAndCertificationConfiguration);
-            services.AddAutoMapper(typeof(Startup).Assembly.GetReferencedAssemblies().Where(a => a.FullName.Contains("Sfa.Tl.ResultsAndCertification.Application")).Select(Assembly.Load));
+            services.AddAutoMapper(cfg => { },
+                typeof(Startup).Assembly.GetReferencedAssemblies().Where(a => a.FullName.Contains("Sfa.Tl.ResultsAndCertification.Application")).Select(Assembly.Load));
             RegisterApplicationServices(services);
 
             ValidatorOptions.Global.DisplayNameResolver = (type, memberInfo, expression) =>
@@ -187,7 +189,6 @@ namespace Sfa.Tl.ResultsAndCertification.InternalApi
             services.AddTransient<IRegistrationService, RegistrationService>();
             services.AddTransient<IWithdrawalService, WithdrawalService>();
 
-
             services.AddTransient<IDataParser<RommCsvRecordResponse>, RommParser>();
             services.AddTransient<IValidator<RommsCsvRecordRequest>, RommValidator>();
             services.AddTransient<ICsvHelperService<RommsCsvRecordRequest, CsvResponseModel<RommCsvRecordResponse>, RommCsvRecordResponse>, CsvHelperService<RommsCsvRecordRequest, CsvResponseModel<RommCsvRecordResponse>, RommCsvRecordResponse>>();
@@ -217,7 +218,7 @@ namespace Sfa.Tl.ResultsAndCertification.InternalApi
             services.AddTransient<ISearchRegistrationService, SearchRegistrationService>();
             services.AddTransient<IProviderRegistrationsService, ProviderRegistrationsService>();
 
-            // DataExports 
+            // DataExports
             services.AddTransient<IDataExportLoader, DataExportLoader>();
             services.AddTransient<IDataExportRepository, DataExportRepository>();
             services.AddTransient<IResultSlipsGeneratorService, ResultSlipsGeneratorService>();

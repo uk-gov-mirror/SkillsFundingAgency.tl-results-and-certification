@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Newtonsoft.Json;
+using NSubstitute;
 using Sfa.Tl.ResultsAndCertification.Application.Interfaces;
 using Sfa.Tl.ResultsAndCertification.Application.Mappers;
 using Sfa.Tl.ResultsAndCertification.Application.Services;
@@ -16,6 +19,7 @@ using Sfa.Tl.ResultsAndCertification.Tests.Common.DataProvider;
 using Sfa.Tl.ResultsAndCertification.Tests.Common.Enum;
 using System;
 using System.Collections.Generic;
+using System.Configuration.Internal;
 using System.Linq;
 
 namespace Sfa.Tl.ResultsAndCertification.IntegrationTests.Services.AdminDashboardServiceTests
@@ -33,19 +37,22 @@ namespace Sfa.Tl.ResultsAndCertification.IntegrationTests.Services.AdminDashboar
 
         protected IAdminDashboardService AdminDashboardService;
 
+        protected ILoggerFactory LoggerFactory;
+
         protected void CreateAdminDasboardService()
         {
+            LoggerFactory = Substitute.For<ILoggerFactory>();
             var adminDashboardRepository = new AdminDashboardRepository(DbContext);
             var repositoryFactory = new RepositoryFactory(new NullLoggerFactory(), DbContext);
             SystemProvider = new SystemProvider();
-            var mapper = CreateMapper();
+            var mapper = CreateMapper(LoggerFactory);
 
             AdminDashboardService = new AdminDashboardService(adminDashboardRepository, repositoryFactory, SystemProvider, mapper);
         }
 
-        private static Mapper CreateMapper()
+        private static Mapper CreateMapper(ILoggerFactory loggerFactory)
         {
-            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(LearnerMapper).Assembly));
+            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(LearnerMapper).Assembly), loggerFactory);
             return new Mapper(mapperConfig);
         }
 
@@ -215,7 +222,6 @@ namespace Sfa.Tl.ResultsAndCertification.IntegrationTests.Services.AdminDashboar
                     tqSpecialismAssessment.EndDate = DateTime.UtcNow;
                 }
                 tqSpecialismAssessments.Add(tqSpecialismAssessment);
-
             }
             return tqSpecialismAssessments;
         }

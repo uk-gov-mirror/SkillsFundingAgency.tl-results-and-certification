@@ -1,4 +1,5 @@
 ﻿using Microsoft.IdentityModel.Tokens;
+using Sfa.Tl.ResultsAndCertification.Common.Extensions;
 using Sfa.Tl.ResultsAndCertification.Common.Helpers;
 using Sfa.Tl.ResultsAndCertification.Web.Content.AdminDashboard;
 using Sfa.Tl.ResultsAndCertification.Web.ViewComponents.Breadcrumb;
@@ -15,7 +16,8 @@ namespace Sfa.Tl.ResultsAndCertification.Web.ViewModel.AdminDashboard
         private const int FirstPage = 1;
         private const int LearnerResultsPageSize = 10;
 
-        public AdminSearchLearnerViewModel() { }
+        public AdminSearchLearnerViewModel()
+        { }
 
         public AdminSearchLearnerViewModel(AdminSearchLearnerFiltersViewModel adminSearchLearnerFiltersViewModel)
         {

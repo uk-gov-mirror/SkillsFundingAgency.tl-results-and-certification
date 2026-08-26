@@ -3,6 +3,7 @@ using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
+using NSubstitute;
 using Sfa.Tl.ResultsAndCertification.Application.Mappers;
 using Sfa.Tl.ResultsAndCertification.Application.Mappers.Resolver;
 using Sfa.Tl.ResultsAndCertification.Application.Services;
@@ -239,7 +240,7 @@ namespace Sfa.Tl.ResultsAndCertification.IntegrationTests.Services.RegistrationS
             get
             {
                 return new[]
-                {                  
+                {
                     // Below is for Provier Changed
                     new object[] { true, true},
 
@@ -293,6 +294,7 @@ namespace Sfa.Tl.ResultsAndCertification.IntegrationTests.Services.RegistrationS
 
         protected override void CreateMapper()
         {
+            LoggerFactory = Substitute.For<ILoggerFactory>();
             var mapperConfig = new MapperConfiguration(c =>
             {
                 c.AddMaps(typeof(RegistrationMapper).Assembly);
@@ -300,7 +302,7 @@ namespace Sfa.Tl.ResultsAndCertification.IntegrationTests.Services.RegistrationS
                             type.Name.Contains("DateTimeResolver") ?
                                 new DateTimeResolver<ManageRegistration, TqRegistrationProfile>(new DateTimeProvider()) :
                                 null);
-            });
+            }, LoggerFactory);
             RegistrationMapper = new Mapper(mapperConfig);
         }
     }

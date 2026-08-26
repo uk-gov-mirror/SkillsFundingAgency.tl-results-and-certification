@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
+using NSubstitute;
 using Respawn;
 using Sfa.Tl.ResultsAndCertification.Application.Mappers;
 using Sfa.Tl.ResultsAndCertification.Application.Services;
@@ -25,6 +26,7 @@ namespace Sfa.Tl.ResultsAndCertification.IntegrationTests.Services.AssessmentSer
     {
         //public long Uln;
         public List<long> Ulns;
+
         protected IList<TlProvider> TlProviders;
         public IList<TqProvider> TqProviders;
         protected IList<TlSpecialism> TlSpecialisms;
@@ -37,6 +39,8 @@ namespace Sfa.Tl.ResultsAndCertification.IntegrationTests.Services.AssessmentSer
         protected IRepository<TqSpecialismAssessment> SpecialismAssessmentRepository;
         protected IRepository<AssessmentSeries> AssessmentSeriesRepository;
         protected IMapper AssessmentMapper;
+        protected ILoggerFactory LoggerFactory;
+
         public AssessmentProcessResponse Result;
         public IList<TqRegistrationProfile> TqRegistrationProfilesData;
         public IList<TqPathwayAssessment> TqPathwayAssessmentsData;
@@ -64,7 +68,8 @@ namespace Sfa.Tl.ResultsAndCertification.IntegrationTests.Services.AssessmentSer
 
         protected void CreateMapper()
         {
-            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(RegistrationMapper).Assembly));
+            LoggerFactory = Substitute.For<ILoggerFactory>();
+            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(RegistrationMapper).Assembly), LoggerFactory);
             AssessmentMapper = new Mapper(mapperConfig);
         }
 
@@ -101,7 +106,7 @@ namespace Sfa.Tl.ResultsAndCertification.IntegrationTests.Services.AssessmentSer
         {
             var profiles = new List<TqRegistrationProfile>();
 
-            foreach(var uln in ulns)
+            foreach (var uln in ulns)
             {
                 profiles.Add(SeedRegistrationData(uln, tqProvider));
             }

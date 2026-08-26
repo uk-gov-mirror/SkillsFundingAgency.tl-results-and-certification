@@ -37,13 +37,13 @@ namespace Sfa.Tl.ResultsAndCertification.IntegrationTests.Services.ProviderServi
 
             _providerTlevelDetails = new List<ProviderTlevel>();
 
-            foreach(var tqAo in _tqAwardingOrganisations)
+            foreach (var tqAo in _tqAwardingOrganisations)
             {
                 _providerTlevelDetails.Add(new ProviderTlevel { TqAwardingOrganisationId = tqAo.Id, TlProviderId = TlProvider.Id, CreatedBy = "test user" });
             }
         }
 
-        public async override Task When()
+        public override async Task When()
         {
             _isSuccess = await ProviderService.AddProviderTlevelsAsync(_providerTlevelDetails);
         }
@@ -56,6 +56,7 @@ namespace Sfa.Tl.ResultsAndCertification.IntegrationTests.Services.ProviderServi
 
         protected override void CreateMapper()
         {
+            LoggerFactory = Substitute.For<ILoggerFactory>();
             var mapperConfig = new MapperConfiguration(c =>
             {
                 c.AddMaps(typeof(ProviderMapper).Assembly);
@@ -63,7 +64,7 @@ namespace Sfa.Tl.ResultsAndCertification.IntegrationTests.Services.ProviderServi
                             type.Name.Contains("DateTimeResolver") ?
                                 new DateTimeResolver<ProviderTlevel, TqProvider>(new DateTimeProvider()) :
                                 null);
-            });
+            }, LoggerFactory);
             ProviderMapper = new Mapper(mapperConfig);
         }
 

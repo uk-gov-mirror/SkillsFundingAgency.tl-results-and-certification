@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
+using NSubstitute;
 using Sfa.Tl.ResultsAndCertification.Application.Mappers;
 using Sfa.Tl.ResultsAndCertification.Application.Services;
 using Sfa.Tl.ResultsAndCertification.Data.Interfaces;
@@ -26,10 +27,12 @@ namespace Sfa.Tl.ResultsAndCertification.IntegrationTests.Services.ProviderServi
         protected IRepository<TlProvider> TlproviderRepository;
         protected IProviderRepository ProviderRepository;
         protected ILogger<ProviderRepository> ProviderRepositoryLogger;
+        protected ILoggerFactory LoggerFactory;
 
         protected virtual void CreateMapper()
         {
-            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(ProviderMapper).Assembly));
+            LoggerFactory = Substitute.For<ILoggerFactory>();
+            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(ProviderMapper).Assembly), LoggerFactory);
             ProviderMapper = new Mapper(mapperConfig);
         }
 

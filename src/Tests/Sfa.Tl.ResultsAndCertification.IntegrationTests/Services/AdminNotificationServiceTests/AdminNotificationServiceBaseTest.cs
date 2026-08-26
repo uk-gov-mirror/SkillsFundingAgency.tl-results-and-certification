@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
+using NSubstitute;
 using Sfa.Tl.ResultsAndCertification.Application.Interfaces;
 using Sfa.Tl.ResultsAndCertification.Application.Mappers;
 using Sfa.Tl.ResultsAndCertification.Application.Services;
@@ -15,20 +16,22 @@ namespace Sfa.Tl.ResultsAndCertification.IntegrationTests.Services.AdminNotifica
     public abstract class AdminNotificationServiceBaseTest : BaseTest<Notification>
     {
         protected IAdminNotificationService AdminNotificationService => CreateAdminNotificationService();
+        protected ILoggerFactory LoggerFactory;
 
         private IAdminNotificationService CreateAdminNotificationService()
         {
+            LoggerFactory = Substitute.For<ILoggerFactory>();
             var bannerRepository = new AdminNotificationRepository(DbContext);
             var logger = new Logger<GenericRepository<Notification>>(new NullLoggerFactory());
             var repository = new GenericRepository<Notification>(logger, DbContext);
-            IMapper mapper = CreateMapper();
+            IMapper mapper = CreateMapper(LoggerFactory);
 
             return new AdminNotificationService(bannerRepository, repository, mapper);
         }
 
-        private static Mapper CreateMapper()
+        private static Mapper CreateMapper(ILoggerFactory loggerFactory)
         {
-            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(AdminProviderMapper).Assembly));
+            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(AdminProviderMapper).Assembly), loggerFactory);
             return new Mapper(mapperConfig);
         }
 

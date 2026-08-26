@@ -28,13 +28,15 @@ namespace Sfa.Tl.ResultsAndCertification.IntegrationTests.Services.TlevelService
         protected TlAwardingOrganisation _tlAwardingOrganisation;
         protected TqAwardingOrganisation _tqAwardingOrganisation;
         protected IEnumerable<AwardingOrganisationPathwayStatus> _result;
+        protected ILoggerFactory LoggerFactory;
 
         protected NotificationService NotificationService;
 
         protected void CreateService()
         {
+            LoggerFactory = Substitute.For<ILoggerFactory>();
             NotificationService = CreateNotificationService();
-            Service = new TlevelService(ResultsAndCertificationConfiguration, Repository, NotificationService, CreateMapper());
+            Service = new TlevelService(ResultsAndCertificationConfiguration, Repository, NotificationService, CreateMapper(LoggerFactory));
         }
 
         private NotificationService CreateNotificationService()
@@ -43,7 +45,7 @@ namespace Sfa.Tl.ResultsAndCertification.IntegrationTests.Services.TlevelService
             return new NotificationService(notificationTemplateRepository, Substitute.For<IAsyncNotificationClient>(), Substitute.For<ILogger<NotificationService>>());
         }
 
-        private static IMapper CreateMapper()
+        private static IMapper CreateMapper(ILoggerFactory loggerFactory)
         {
             var mapperConfig = new MapperConfiguration(c =>
             {
@@ -52,7 +54,7 @@ namespace Sfa.Tl.ResultsAndCertification.IntegrationTests.Services.TlevelService
                             type.Name.Contains("DateTimeResolver") ?
                                 new DateTimeResolver<VerifyTlevelDetails, TqAwardingOrganisation>(new DateTimeProvider()) :
                                 null);
-            });
+            }, loggerFactory);
 
             return new Mapper(mapperConfig);
         }

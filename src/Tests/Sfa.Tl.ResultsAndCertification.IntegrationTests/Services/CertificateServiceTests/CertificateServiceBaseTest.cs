@@ -2,6 +2,7 @@
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
+using NSubstitute;
 using Sfa.Tl.ResultsAndCertification.Application.Mappers;
 using Sfa.Tl.ResultsAndCertification.Application.Services;
 using Sfa.Tl.ResultsAndCertification.Common.Enum;
@@ -32,6 +33,7 @@ namespace Sfa.Tl.ResultsAndCertification.IntegrationTests.Services.CertificateSe
         protected IList<TqProvider> TqProviders;
         protected ResultsAndCertificationConfiguration ResultsAndCertificationConfiguration;
         protected CertificateService CertificateService;
+        protected ILoggerFactory LoggerFactory;
 
         protected virtual void SeedTestData(EnumAwardingOrganisation awardingOrganisation = EnumAwardingOrganisation.Pearson, bool seedMultipleProviders = false)
         {
@@ -64,11 +66,12 @@ namespace Sfa.Tl.ResultsAndCertification.IntegrationTests.Services.CertificateSe
 
             var certificateRepositoryLogger = new Logger<CertificateRepository>(new NullLoggerFactory());
             var certificateRepository = new CertificateRepository(certificateRepositoryLogger, DbContext);
- 
-            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(CertificateMapper).Assembly));
+
+            LoggerFactory = Substitute.For<ILoggerFactory>();
+            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(CertificateMapper).Assembly), LoggerFactory);
             var mapper = new Mapper(mapperConfig);
 
-            // Create Service class to test. 
+            // Create Service class to test.
             CertificateService = new CertificateService(ResultsAndCertificationConfiguration, overallResultRepository, certificateRepository, mapper);
         }
 
@@ -187,7 +190,7 @@ namespace Sfa.Tl.ResultsAndCertification.IntegrationTests.Services.CertificateSe
         {
             BarsleyCollege = 10000536,
             BishopBurtonCollege = 10000721,
-            WalsallCollege = 10007315            
+            WalsallCollege = 10007315
         }
     }
 }

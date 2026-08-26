@@ -9,18 +9,22 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using NSubstitute;
+using Microsoft.Extensions.Logging;
 
 namespace Sfa.Tl.ResultsAndCertification.Application.UnitTests.Mapper.TqRegistrationPathwayToCoreRommExtractData
 {
     public abstract class TestSetup : BaseTest<IMapper>
     {
+        protected ILoggerFactory LoggerFactory;
         protected IMapper Mapper;
         protected TqRegistrationPathway Source;
         protected CoreRommExtractData Destination;
 
         public override void Setup()
         {
-            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(CoreRommExtractMapper).Assembly));
+            LoggerFactory = Substitute.For<ILoggerFactory>();
+            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(CoreRommExtractMapper).Assembly), LoggerFactory);
             Mapper = mapperConfig.CreateMapper();
 
             Source = InitialiseSource();

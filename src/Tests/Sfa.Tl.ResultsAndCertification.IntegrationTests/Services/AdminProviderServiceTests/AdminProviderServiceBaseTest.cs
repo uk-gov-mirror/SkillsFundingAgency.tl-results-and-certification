@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
+using NSubstitute;
 using Sfa.Tl.ResultsAndCertification.Application.Interfaces;
 using Sfa.Tl.ResultsAndCertification.Application.Mappers;
 using Sfa.Tl.ResultsAndCertification.Application.Services;
@@ -11,18 +12,21 @@ namespace Sfa.Tl.ResultsAndCertification.IntegrationTests.Services.AdminProvider
 {
     public abstract class AdminProviderServiceBaseTest : BaseTest<TqProvider>
     {
+        protected ILoggerFactory LoggerFactory;
+
         protected IAdminProviderService CreateAdminProviderService()
         {
+            LoggerFactory = Substitute.For<ILoggerFactory>();
             var logger = new Logger<GenericRepository<TlProvider>>(new NullLoggerFactory());
             var repository = new GenericRepository<TlProvider>(logger, DbContext);
-            IMapper mapper = CreateMapper();
+            IMapper mapper = CreateMapper(LoggerFactory);
 
             return new AdminProviderService(repository, mapper);
         }
 
-        private static Mapper CreateMapper()
+        private static Mapper CreateMapper(ILoggerFactory loggerFactory)
         {
-            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(AdminProviderMapper).Assembly));
+            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(AdminProviderMapper).Assembly), loggerFactory);
             return new Mapper(mapperConfig);
         }
     }

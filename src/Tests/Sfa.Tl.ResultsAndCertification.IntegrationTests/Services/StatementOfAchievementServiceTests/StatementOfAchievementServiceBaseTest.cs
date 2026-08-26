@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
+using NSubstitute;
 using Sfa.Tl.ResultsAndCertification.Application.Mappers;
 using Sfa.Tl.ResultsAndCertification.Application.Services;
 using Sfa.Tl.ResultsAndCertification.Common.Enum;
@@ -18,7 +19,7 @@ namespace Sfa.Tl.ResultsAndCertification.IntegrationTests.Services.StatementOfAc
     public abstract class StatementOfAchievementServiceBaseTest : BaseTest<TlProvider>
     {
         protected StatementOfAchievementService StatementOfAchievementService;
-       
+
         protected IMapper TrainingProviderMapper;
         protected ILogger<StatementOfAchievementService> StatementOfAchievementServiceLogger;
         protected IStatementOfAchievementRepository StatementOfAchievementRepository;
@@ -28,6 +29,7 @@ namespace Sfa.Tl.ResultsAndCertification.IntegrationTests.Services.StatementOfAc
 
         // Data Seed variables
         protected TlAwardingOrganisation TlAwardingOrganisation;
+
         protected TlRoute Route;
         protected TlPathway Pathway;
         protected TlSpecialism Specialism;
@@ -40,9 +42,12 @@ namespace Sfa.Tl.ResultsAndCertification.IntegrationTests.Services.StatementOfAc
         protected IList<TlLookup> TlLookup;
         protected IList<Qualification> Qualifications;
 
+        protected ILoggerFactory LoggerFactory;
+
         protected virtual void CreateMapper()
         {
-            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(StatementOfAchievementMapper).Assembly));
+            LoggerFactory = Substitute.For<ILoggerFactory>();
+            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(StatementOfAchievementMapper).Assembly), LoggerFactory);
             TrainingProviderMapper = new Mapper(mapperConfig);
         }
 
@@ -214,7 +219,6 @@ namespace Sfa.Tl.ResultsAndCertification.IntegrationTests.Services.StatementOfAc
 
             return TqPathwayAssessment;
         }
-
 
         public IList<Qualification> SeedQualificationData()
         {

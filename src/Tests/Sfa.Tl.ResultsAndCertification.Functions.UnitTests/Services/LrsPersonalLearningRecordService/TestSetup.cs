@@ -18,20 +18,22 @@ namespace Sfa.Tl.ResultsAndCertification.Functions.UnitTests.Services.LrsPersona
         protected ILrsPersonalLearningRecordServiceApiClient LrsPersonalLearningRecordApiClient;
         protected Functions.Services.LrsPersonalLearningRecordService Service;
         protected LrsLearnerVerificationAndLearningEventsResponse ActualResult;
+        protected ILoggerFactory LoggerFactory;
 
         public override void Setup()
         {
             Logger = Substitute.For<ILogger<ILrsPersonalLearningRecordService>>();
             LrsService = Substitute.For<ILrsService>();
+            LoggerFactory = Substitute.For<ILoggerFactory>();
             LrsPersonalLearningRecordApiClient = Substitute.For<ILrsPersonalLearningRecordServiceApiClient>();
 
-            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(Startup).Assembly));
+            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(Startup).Assembly), LoggerFactory);
             Mapper = new AutoMapper.Mapper(mapperConfig);
 
             Service = new Functions.Services.LrsPersonalLearningRecordService(Mapper, Logger, LrsPersonalLearningRecordApiClient, LrsService);
         }
 
-        public async override Task When()
+        public override async Task When()
         {
             ActualResult = await Service.ProcessLearnerVerificationAndLearningEventsAsync();
         }

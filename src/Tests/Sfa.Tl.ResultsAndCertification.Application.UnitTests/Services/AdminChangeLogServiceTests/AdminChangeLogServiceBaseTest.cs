@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.Extensions.Logging;
 using NSubstitute;
 using Sfa.Tl.ResultsAndCertification.Application.Mappers;
 using Sfa.Tl.ResultsAndCertification.Application.Services;
@@ -12,18 +13,21 @@ namespace Sfa.Tl.ResultsAndCertification.Application.UnitTests.Services.AdminCha
         protected IAdminChangeLogRepository AdminChangeLogRepository;
         protected AdminChangeLogService AdminChangeLogService;
         protected IMapper Mapper;
+        protected ILoggerFactory LoggerFactory;
 
         public override void Setup()
         {
-            Mapper = CreateMapper();
+            LoggerFactory = Substitute.For<ILoggerFactory>();
+
+            Mapper = CreateMapper(LoggerFactory);
 
             AdminChangeLogRepository = Substitute.For<IAdminChangeLogRepository>();
             AdminChangeLogService = new AdminChangeLogService(AdminChangeLogRepository, Mapper);
         }
 
-        private static AutoMapper.Mapper CreateMapper()
+        private static AutoMapper.Mapper CreateMapper(ILoggerFactory loggerFactory)
         {
-            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(ChangeLogMapper).Assembly));
+            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(ChangeLogMapper).Assembly), loggerFactory);
             return new AutoMapper.Mapper(mapperConfig);
         }
     }

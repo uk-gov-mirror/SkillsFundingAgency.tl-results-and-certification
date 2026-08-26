@@ -19,20 +19,22 @@ namespace Sfa.Tl.ResultsAndCertification.Functions.UnitTests.LearnerVerification
         protected ICommonService CommonService;
         protected ILrsPersonalLearningRecordService LrsPersonalLearningRecordService;
         protected Functions.LearnerVerificationAndLearningEvents LearningEventsFunction;
+        protected ILoggerFactory LoggerFactory;
 
         public override void Setup()
         {
             TimerSchedule = Substitute.For<TimerSchedule>();
             CommonService = Substitute.For<ICommonService>();
             Logger = Substitute.For<ILogger<ILrsPersonalLearningRecordService>>();
+            LoggerFactory = Substitute.For<ILoggerFactory>();
             LrsPersonalLearningRecordService = Substitute.For<ILrsPersonalLearningRecordService>();
 
-            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(Startup).Assembly));
+            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(Startup).Assembly), LoggerFactory);
             Mapper = new AutoMapper.Mapper(mapperConfig);
             LearningEventsFunction = new Functions.LearnerVerificationAndLearningEvents(CommonService, LrsPersonalLearningRecordService);
         }
 
-        public async override Task When()
+        public override async Task When()
         {
             await LearningEventsFunction.VerifyLearnerAndFetchLearningEventsAsync(new TimerInfo(TimerSchedule, new ScheduleStatus()), new ExecutionContext(), new NullLogger<Functions.LearnerVerificationAndLearningEvents>());
         }

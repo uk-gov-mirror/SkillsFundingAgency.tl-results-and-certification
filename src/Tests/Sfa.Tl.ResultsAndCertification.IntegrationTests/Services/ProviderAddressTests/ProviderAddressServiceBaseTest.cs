@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
+using NSubstitute;
 using Sfa.Tl.ResultsAndCertification.Application.Mappers;
 using Sfa.Tl.ResultsAndCertification.Application.Services;
 using Sfa.Tl.ResultsAndCertification.Data.Interfaces;
@@ -17,18 +18,20 @@ namespace Sfa.Tl.ResultsAndCertification.IntegrationTests.Services.ProviderAddre
         protected ProviderAddressService ProviderAddressService;
         protected IRepository<TlProvider> TlProviderRepository;
         protected ILogger<GenericRepository<TlProvider>> TlProviderRepositoryLogger;
-        protected ILogger<GenericRepository<TlProviderAddress>> TlProviderAddressLogger;        
+        protected ILogger<GenericRepository<TlProviderAddress>> TlProviderAddressLogger;
         protected IRepository<TlProviderAddress> TlProviderAddressRepository;
         protected IMapper ProviderAddressMapper;
         protected ILogger<ProviderAddressService> ProviderAddressServiceLogger;
 
-        // Data Seed variables        
+        // Data Seed variables
         protected IEnumerable<TlProvider> TlProviders;
-        
+
+        protected ILoggerFactory LoggerFactory;
 
         protected virtual void CreateMapper()
         {
-            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(ProviderAddressMapper).Assembly));
+            LoggerFactory = Substitute.For<ILoggerFactory>();
+            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(ProviderAddressMapper).Assembly), LoggerFactory);
             ProviderAddressMapper = new Mapper(mapperConfig);
         }
 

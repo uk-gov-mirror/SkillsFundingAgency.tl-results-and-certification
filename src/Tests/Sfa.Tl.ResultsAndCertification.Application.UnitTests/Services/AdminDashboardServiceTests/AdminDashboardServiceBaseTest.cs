@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.Extensions.Logging;
 using NSubstitute;
 using Sfa.Tl.ResultsAndCertification.Application.Interfaces;
 using Sfa.Tl.ResultsAndCertification.Application.Mappers;
@@ -18,6 +19,7 @@ namespace Sfa.Tl.ResultsAndCertification.Application.UnitTests.Services.AdminDas
         protected ISystemProvider SystemProvider;
         protected ICommonService CommonService;
         protected IMapper Mapper;
+        protected ILoggerFactory LoggerFactory;
 
         protected AdminDashboardService AdminDashboardService;
 
@@ -25,20 +27,21 @@ namespace Sfa.Tl.ResultsAndCertification.Application.UnitTests.Services.AdminDas
         {
             var today = new DateTime(2023, 1, 1);
 
+            LoggerFactory = Substitute.For<ILoggerFactory>();
             AdminDashboardRepository = Substitute.For<IAdminDashboardRepository>();
             RepositoryFactory = Substitute.For<IRepositoryFactory>();
 
             SystemProvider = Substitute.For<ISystemProvider>();
             SystemProvider.UtcToday.Returns(today);
 
-            Mapper = CreateMapper();
+            Mapper = CreateMapper(LoggerFactory);
 
             AdminDashboardService = new AdminDashboardService(AdminDashboardRepository, RepositoryFactory, SystemProvider, Mapper);
         }
 
-        private static AutoMapper.Mapper CreateMapper()
+        private static AutoMapper.Mapper CreateMapper(ILoggerFactory loggerFactory)
         {
-            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(LearnerMapper).Assembly));
+            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(LearnerMapper).Assembly), loggerFactory);
             return new AutoMapper.Mapper(mapperConfig);
         }
     }

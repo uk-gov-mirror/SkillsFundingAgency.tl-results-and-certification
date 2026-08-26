@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Microsoft.Extensions.Logging;
+using NSubstitute;
 using Sfa.Tl.ResultsAndCertification.Application.Mappers;
 using Sfa.Tl.ResultsAndCertification.Application.Services;
 using Sfa.Tl.ResultsAndCertification.Domain.Models;
@@ -7,12 +9,14 @@ namespace Sfa.Tl.ResultsAndCertification.IntegrationTests.Services.AwardingOrgan
 {
     public abstract class AwardingOrganisationServiceBaseTest : BaseTest<TlAwardingOrganisation>
     {
-        protected AwardingOrganisationService CreateService()
-            => new(Repository, CreateMapper());
+        protected ILoggerFactory LoggerFactory;
 
-        private static Mapper CreateMapper()
+        protected AwardingOrganisationService CreateService()
+            => new(Repository, CreateMapper(LoggerFactory));
+
+        private static Mapper CreateMapper(ILoggerFactory loggerFactory)
         {
-            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(AwardingOrganisationMapper).Assembly));
+            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(AwardingOrganisationMapper).Assembly), loggerFactory);
             return new Mapper(mapperConfig);
         }
 
@@ -36,6 +40,8 @@ namespace Sfa.Tl.ResultsAndCertification.IntegrationTests.Services.AwardingOrgan
 
         public override void Given()
         {
+            LoggerFactory = Substitute.For<ILoggerFactory>();
+
             DbContext.AddRange(new[] { Ncfe, Pearson });
             DbContext.SaveChanges();
 

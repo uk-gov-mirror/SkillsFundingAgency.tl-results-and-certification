@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using FluentAssertions;
+using Microsoft.Extensions.Logging;
+using NSubstitute;
 using Sfa.Tl.ResultsAndCertification.Application.Mappers;
 using Sfa.Tl.ResultsAndCertification.Common.Enum;
 using Sfa.Tl.ResultsAndCertification.Domain.Models;
@@ -15,13 +17,14 @@ namespace Sfa.Tl.ResultsAndCertification.Application.UnitTests.Mapper.TqRegistra
     public abstract class TestSetup : BaseTest<IMapper>
     {
         protected IMapper Mapper;
+        protected ILoggerFactory LoggerFactory;
         protected TqRegistrationSpecialism Source;
         protected SpecialRommExtractionData Destination;
 
-
         public override void Setup()
         {
-            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(SpecialismRommExtractMapper).Assembly));
+            LoggerFactory = Substitute.For<ILoggerFactory>();
+            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(SpecialismRommExtractMapper).Assembly), LoggerFactory);
             Mapper = mapperConfig.CreateMapper();
 
             Source = InitialiseSource();
@@ -37,7 +40,8 @@ namespace Sfa.Tl.ResultsAndCertification.Application.UnitTests.Mapper.TqRegistra
         {
             return new TqRegistrationSpecialism()
             {
-                TlSpecialism = new TlSpecialism() {
+                TlSpecialism = new TlSpecialism()
+                {
                     Id = 1,
                     LarId = "The_Lar_Id",
                     Name = "Civil Engineering"
@@ -66,7 +70,6 @@ namespace Sfa.Tl.ResultsAndCertification.Application.UnitTests.Mapper.TqRegistra
                     TqRegistrationSpecialisms = new TqRegistrationSpecialism[]
                     {
                         new TqRegistrationSpecialism(){
-                            
                             TlSpecialismId = 1,
                             TlSpecialism = new TlSpecialism()
                             {

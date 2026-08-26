@@ -35,6 +35,7 @@ namespace Sfa.Tl.ResultsAndCertification.IntegrationTests.Services.TrainingProvi
 
         // Data Seed variables
         protected TlAwardingOrganisation TlAwardingOrganisation;
+
         protected TlRoute Route;
         protected TlPathway Pathway;
         protected TlSpecialism Specialism;
@@ -47,10 +48,12 @@ namespace Sfa.Tl.ResultsAndCertification.IntegrationTests.Services.TrainingProvi
         protected IList<TlLookup> PathwayComponentGrades;
         protected IList<Qualification> Qualifications;
         protected IList<TlProviderAddress> TlProviderAddresses;
+        protected ILoggerFactory LoggerFactory;
 
         protected virtual void CreateMapper()
         {
-            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(TrainingProviderMapper).Assembly));
+            LoggerFactory = Substitute.For<ILoggerFactory>();
+            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(TrainingProviderMapper).Assembly), LoggerFactory);
             TrainingProviderMapper = new Mapper(mapperConfig);
         }
 

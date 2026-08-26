@@ -1,4 +1,5 @@
 ﻿using Microsoft.IdentityModel.Tokens;
+using Sfa.Tl.ResultsAndCertification.Common.Extensions;
 using Sfa.Tl.ResultsAndCertification.Common.Helpers;
 using Sfa.Tl.ResultsAndCertification.Web.ViewComponents.Breadcrumb;
 using Sfa.Tl.ResultsAndCertification.Web.ViewComponents.Pagination;
@@ -17,7 +18,8 @@ namespace Sfa.Tl.ResultsAndCertification.Web.ViewModel.SearchRegistration
 
         public SearchRegistrationType SearchType { get; set; }
 
-        public SearchRegistrationViewModel() { }
+        public SearchRegistrationViewModel()
+        { }
 
         public SearchRegistrationViewModel(SearchRegistrationType type, SearchRegistrationFiltersViewModel filters)
         {

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
 using Notify.Interfaces;
+using NSubstitute;
 using Sfa.Tl.ResultsAndCertification.Application.Interfaces;
 using Sfa.Tl.ResultsAndCertification.Application.Mappers;
 using Sfa.Tl.ResultsAndCertification.Application.Services;
@@ -38,9 +39,12 @@ namespace Sfa.Tl.ResultsAndCertification.IntegrationTests.Services.CommonService
         protected ILogger<GenericRepository<ChangeLog>> ChangeLogRepositoryLogger;
         protected IRepository<ChangeLog> ChangeLogRepository;
 
+        protected ILoggerFactory LoggerFactory;
+
         protected virtual void CreateMapper()
         {
-            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(CommonMapper).Assembly));
+            LoggerFactory = Substitute.For<ILoggerFactory>();
+            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(CommonMapper).Assembly), LoggerFactory);
             CommonMapper = new Mapper(mapperConfig);
         }
 
@@ -50,7 +54,7 @@ namespace Sfa.Tl.ResultsAndCertification.IntegrationTests.Services.CommonService
             DbContext.SaveChangesAsync();
         }
 
-        public FunctionLog  SeedFunctionLog()
+        public FunctionLog SeedFunctionLog()
         {
             var functionLog = new FunctionLogBuilder().Build();
             var functionLogEntity = FunctionLogDataProvider.CreateFunctionLog(DbContext, functionLog);

@@ -62,7 +62,6 @@ namespace Sfa.Tl.ResultsAndCertification.IntegrationTests.Services.CertificateSe
                     .Save(DbContext));
             }
 
-
             // Create CertificateService
             CreateService();
 
@@ -112,13 +111,12 @@ namespace Sfa.Tl.ResultsAndCertification.IntegrationTests.Services.CertificateSe
             var certificateRepositoryLogger = new Logger<CertificateRepository>(new NullLoggerFactory());
             _certificateRepository = Substitute.For<ICertificateRepository>();
 
-
-            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(CertificateMapper).Assembly));
+            LoggerFactory = Substitute.For<ILoggerFactory>();
+            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(CertificateMapper).Assembly), LoggerFactory);
             var mapper = new Mapper(mapperConfig);
 
-            // Create Service class to test. 
+            // Create Service class to test.
             CertificateService = new CertificateService(ResultsAndCertificationConfiguration, overallResultRepository, _certificateRepository, mapper);
         }
-
     }
 }

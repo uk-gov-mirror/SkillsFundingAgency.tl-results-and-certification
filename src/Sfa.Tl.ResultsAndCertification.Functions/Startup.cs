@@ -30,6 +30,7 @@ using System.Linq;
 using System.Reflection;
 
 [assembly: FunctionsStartup(typeof(Startup))]
+
 namespace Sfa.Tl.ResultsAndCertification.Functions
 {
     public class Startup : FunctionsStartup
@@ -58,7 +59,7 @@ namespace Sfa.Tl.ResultsAndCertification.Functions
 
             services.AddSingleton(_configuration);
             Assembly[] assemblies = new Assembly[] { typeof(Startup).Assembly, typeof(Startup).Assembly.GetReferencedAssemblies().Where(a => a.FullName.Contains("Sfa.Tl.ResultsAndCertification.Application")).Select(Assembly.Load).FirstOrDefault() };
-            services.AddAutoMapper(assemblies);
+            services.AddAutoMapper(cfg => { }, assemblies);
             services.AddHttpContextAccessor();
 
             RegisterApplicationServices(services);

@@ -18,20 +18,22 @@ namespace Sfa.Tl.ResultsAndCertification.Functions.UnitTests.Services.LrsLearner
         protected ILrsLearnerServiceApiClient LrsLearnerServiceApiClient;
         protected Functions.Services.LrsLearnerService Service;
         protected LrsLearnerGenderResponse ActualResult;
+        protected ILoggerFactory LoggerFactory;
 
         public override void Setup()
         {
             Logger = Substitute.For<ILogger<ILrsLearnerService>>();
             LrsService = Substitute.For<ILrsService>();
+            LoggerFactory = Substitute.For<ILoggerFactory>();
             LrsLearnerServiceApiClient = Substitute.For<ILrsLearnerServiceApiClient>();
 
-            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(Startup).Assembly));
+            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(Startup).Assembly), LoggerFactory);
             Mapper = new AutoMapper.Mapper(mapperConfig);
 
             Service = new Functions.Services.LrsLearnerService(Mapper, Logger, LrsLearnerServiceApiClient, LrsService);
         }
 
-        public async override Task When()
+        public override async Task When()
         {
             ActualResult = await Service.FetchLearnerGenderAsync();
         }

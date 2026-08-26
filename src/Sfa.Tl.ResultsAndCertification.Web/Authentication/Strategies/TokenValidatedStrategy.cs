@@ -32,7 +32,7 @@ namespace Sfa.Tl.ResultsAndCertification.Web.Authentication.Strategies
         public async Task GetOnTokenValidatedTask(TokenValidatedContext context)
         {
             var claims = new List<Claim>();
-            var organisation = JObject.Parse(context.Principal.FindFirst("Organisation").Value);
+            var organisation = JObject.Parse(context.Principal.FindFirst("organisation").Value);
 
             if (organisation.HasValues)
             {
@@ -65,7 +65,6 @@ namespace Sfa.Tl.ResultsAndCertification.Web.Authentication.Strategies
                             claims.AddRange(userInfo.Roles.Select(role => new Claim(ClaimTypes.Role, role.Name)));
                         }
                     }
-
                 }
                 else
                 { claims.Add(new Claim(CustomClaimTypes.HasAccessToService, "true")); }

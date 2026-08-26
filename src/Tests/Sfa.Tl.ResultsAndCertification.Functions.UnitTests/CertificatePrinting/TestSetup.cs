@@ -13,6 +13,7 @@ namespace Sfa.Tl.ResultsAndCertification.Functions.UnitTests.CertificatePrinting
     public abstract class TestSetup : BaseTest<Functions.CertificatePrinting>
     {
         protected IMapper Mapper;
+        protected ILoggerFactory LoggerFactory;
         protected ILogger<ICertificatePrintingService> Logger;
         protected TimerSchedule TimerSchedule;
         protected ICommonService CommonService;
@@ -26,12 +27,13 @@ namespace Sfa.Tl.ResultsAndCertification.Functions.UnitTests.CertificatePrinting
             CommonService = Substitute.For<ICommonService>();
             Logger = Substitute.For<ILogger<ICertificatePrintingService>>();
             CertificatePrintingService = Substitute.For<ICertificatePrintingService>();
+            LoggerFactory = Substitute.For<ILoggerFactory>();
             ResultsAndCertificationConfiguration = new ResultsAndCertificationConfiguration
             {
                 CertificatePrintingBatchesCreateStartDate = DateTime.UtcNow
             };
 
-            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(Startup).Assembly));
+            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(Startup).Assembly), LoggerFactory);
             Mapper = new AutoMapper.Mapper(mapperConfig);
             CertificatePrintingFunction = new Functions.CertificatePrinting(ResultsAndCertificationConfiguration, CommonService, CertificatePrintingService);
         }

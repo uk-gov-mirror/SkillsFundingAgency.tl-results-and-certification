@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
+using NSubstitute;
 using Sfa.Tl.ResultsAndCertification.Application.Mappers;
 using Sfa.Tl.ResultsAndCertification.Application.Services;
 using Sfa.Tl.ResultsAndCertification.Common.Enum;
@@ -35,11 +36,13 @@ namespace Sfa.Tl.ResultsAndCertification.IntegrationTests.Services.LearnerServic
 
         protected ILogger<ILearnerRepository> LearnerRepositoryLogger;
         protected ILearnerRepository LearnerRepository;
-        protected IMapper LearnerMapper;        
+        protected IMapper LearnerMapper;
+        protected ILoggerFactory LoggerFactory;
 
         protected virtual void CreateMapper()
         {
-            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(LearnerMapper).Assembly));
+            LoggerFactory = Substitute.For<ILoggerFactory>();
+            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(LearnerMapper).Assembly), LoggerFactory);
             LearnerMapper = new Mapper(mapperConfig);
         }
 
@@ -177,7 +180,6 @@ namespace Sfa.Tl.ResultsAndCertification.IntegrationTests.Services.LearnerServic
                     tqSpecialismAssessment.EndDate = DateTime.UtcNow;
                 }
                 tqSpecialismAssessments.Add(tqSpecialismAssessment);
-
             }
             return tqSpecialismAssessments;
         }

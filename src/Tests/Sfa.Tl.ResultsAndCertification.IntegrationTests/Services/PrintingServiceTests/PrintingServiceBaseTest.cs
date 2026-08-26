@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Notify.Interfaces;
+using NSubstitute;
 using Sfa.Tl.ResultsAndCertification.Application.Interfaces;
 using Sfa.Tl.ResultsAndCertification.Application.Mappers;
 using Sfa.Tl.ResultsAndCertification.Application.Services;
@@ -24,6 +25,7 @@ namespace Sfa.Tl.ResultsAndCertification.IntegrationTests.Services.PrintingServi
     {
         // Seed objects.
         protected TlAwardingOrganisation TlAwardingOrganisation;
+
         protected TlRoute Route;
         protected TlPathway Pathway;
         protected TlSpecialism Specialism;
@@ -38,6 +40,7 @@ namespace Sfa.Tl.ResultsAndCertification.IntegrationTests.Services.PrintingServi
 
         // Dependencies.
         protected IRepository<Batch> BatchRepository;
+
         protected ILogger<GenericRepository<Batch>> BatchRepositoryLogger;
 
         protected IRepository<PrintBatchItem> PrintBatchItemRepository;
@@ -52,12 +55,14 @@ namespace Sfa.Tl.ResultsAndCertification.IntegrationTests.Services.PrintingServi
         protected ILogger<GenericRepository<NotificationTemplate>> NotificationTemplateRepositoryLogger;
         protected ILogger<INotificationService> NotificationServiceLogger;
         protected INotificationService NotificationService;
-
         protected IPrintingService PrintingService;
+
+        protected ILoggerFactory LoggerFactory;
 
         protected virtual void CreateMapper()
         {
-            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(PrintingServiceMapper).Assembly));
+            LoggerFactory = Substitute.For<ILoggerFactory>();
+            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(PrintingServiceMapper).Assembly), LoggerFactory);
             PrintingServiceMapper = new Mapper(mapperConfig);
         }
 

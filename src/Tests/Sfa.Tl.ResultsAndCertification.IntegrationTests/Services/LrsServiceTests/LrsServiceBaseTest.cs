@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
+using NSubstitute;
 using Sfa.Tl.ResultsAndCertification.Application.Interfaces;
 using Sfa.Tl.ResultsAndCertification.Application.Mappers;
 using Sfa.Tl.ResultsAndCertification.Application.Services;
@@ -31,9 +32,12 @@ namespace Sfa.Tl.ResultsAndCertification.IntegrationTests.Services.LrsServiceTes
         protected IList<TlLookup> TlLookup;
         protected IList<Qualification> Qualifications;
 
+        protected ILoggerFactory LoggerFactory;
+
         protected virtual void CreateMapper()
         {
-            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(LrsServiceMapper).Assembly));
+            LoggerFactory = Substitute.For<ILoggerFactory>();
+            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(LrsServiceMapper).Assembly), LoggerFactory);
             Mapper = new Mapper(mapperConfig);
         }
 
@@ -62,13 +66,13 @@ namespace Sfa.Tl.ResultsAndCertification.IntegrationTests.Services.LrsServiceTes
             DbContext.SaveChanges();
             return profiles;
         }
-        
+
         public IList<Qualification> SeedQualificationsData()
         {
             var qualificationsList = new QualificationBuilder().BuildList();
             var qualifications = QualificationDataProvider.CreateQualificationList(DbContext, qualificationsList);
 
-            foreach(var qual in qualifications)
+            foreach (var qual in qualifications)
             {
                 qual.QualificationType.QualificationGrades = new QualificationGradeBuilder().BuildList(qual.QualificationType);
             }
@@ -91,8 +95,8 @@ namespace Sfa.Tl.ResultsAndCertification.IntegrationTests.Services.LrsServiceTes
                 PerformedBy = profile.CreatedBy
             };
 
-            if(seedLearningEvents)
-            {              
+            if (seedLearningEvents)
+            {
                 var engQual = Qualifications.FirstOrDefault(e => e.TlLookup.Code == "Eng");
                 var mathQual = Qualifications.FirstOrDefault(e => e.TlLookup.Code == "Math");
 
@@ -117,7 +121,7 @@ namespace Sfa.Tl.ResultsAndCertification.IntegrationTests.Services.LrsServiceTes
                     QualificationCode = mathQual.Code,
                     IsQualificationAllowed = mathQual.IsActive,
                     IsMathsSubject = mathQual.TlLookup?.Code.Equals("Math", StringComparison.InvariantCultureIgnoreCase) ?? false
-                });                   
+                });
             }
             return learnerRecord;
         }

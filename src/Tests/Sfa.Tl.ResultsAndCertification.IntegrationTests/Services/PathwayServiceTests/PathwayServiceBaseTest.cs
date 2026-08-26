@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using AutoMapper;
 using Microsoft.Extensions.Logging;
+using NSubstitute;
 using Sfa.Tl.ResultsAndCertification.Application.Mappers;
 using Sfa.Tl.ResultsAndCertification.Application.Services;
 using Sfa.Tl.ResultsAndCertification.Data.Interfaces;
@@ -24,10 +25,13 @@ namespace Sfa.Tl.ResultsAndCertification.IntegrationTests.Services.PathwayServic
         protected IList<TlPathwaySpecialismCombination> _tlPathwaySpecialismCombinations;
         protected TlevelPathwayDetails _result;
 
+        protected ILoggerFactory LoggerFactory;
+
         public void CreateMapper()
         {
-            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(PathwayMapper).Assembly));
-            _mapper = new Mapper(mapperConfig);            
+            LoggerFactory = Substitute.For<ILoggerFactory>();
+            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(PathwayMapper).Assembly), LoggerFactory);
+            _mapper = new Mapper(mapperConfig);
         }
 
         protected virtual void SeedTlevelTestData(EnumAwardingOrganisation awardingOrganisation = EnumAwardingOrganisation.Ncfe)

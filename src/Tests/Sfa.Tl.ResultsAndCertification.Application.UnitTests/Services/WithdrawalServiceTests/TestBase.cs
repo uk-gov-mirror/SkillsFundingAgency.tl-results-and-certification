@@ -16,7 +16,7 @@ namespace Sfa.Tl.ResultsAndCertification.Application.UnitTests.Services.Withdraw
         protected IRegistrationRepository RegistrationRepository;
         protected IRepository<TqRegistrationPathway> TqRegistrationPathwayRepository;
         protected ICommonService CommonService;
-
+        protected ILoggerFactory LoggerFactory;
         protected WithdrawalService WithdrawalService;
 
         public override void Setup()
@@ -25,16 +25,17 @@ namespace Sfa.Tl.ResultsAndCertification.Application.UnitTests.Services.Withdraw
             RegistrationRepository = Substitute.For<IRegistrationRepository>();
             TqRegistrationPathwayRepository = Substitute.For<IRepository<TqRegistrationPathway>>();
             CommonService = Substitute.For<ICommonService>();
+            LoggerFactory = Substitute.For<ILoggerFactory>();
 
-            IMapper mapper = CreateMapper();
+            IMapper mapper = CreateMapper(LoggerFactory);
             ILogger<WithdrawalService> logger = Substitute.For<ILogger<WithdrawalService>>();
 
             WithdrawalService = new WithdrawalService(ProviderRepository, RegistrationRepository, TqRegistrationPathwayRepository, CommonService, mapper, logger);
         }
 
-        private static AutoMapper.Mapper CreateMapper()
+        private static AutoMapper.Mapper CreateMapper(ILoggerFactory loggerFactory)
         {
-            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(RegistrationMapper).Assembly));
+            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(RegistrationMapper).Assembly), loggerFactory);
             return new AutoMapper.Mapper(mapperConfig);
         }
     }

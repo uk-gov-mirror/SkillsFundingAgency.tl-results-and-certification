@@ -2,6 +2,7 @@
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
+using NSubstitute;
 using Sfa.Tl.ResultsAndCertification.Application.Interfaces;
 using Sfa.Tl.ResultsAndCertification.Application.Mappers;
 using Sfa.Tl.ResultsAndCertification.Application.Mappers.Converter.IndustryPlacement;
@@ -26,6 +27,7 @@ namespace Sfa.Tl.ResultsAndCertification.IntegrationTests.Services.OverallResult
     {
         // Seed variables
         protected long AoUkprn = 10011881;
+
         protected TlRoute Route;
         protected TlPathway Pathway;
         protected TlSpecialism Specialism;
@@ -56,6 +58,7 @@ namespace Sfa.Tl.ResultsAndCertification.IntegrationTests.Services.OverallResult
         protected IOverallResultRepository OverallResultRepository;
         protected ILogger<OverallResultRepository> OverallResultLogger;
         protected IMapper Mapper;
+        protected ILoggerFactory LoggerFactory;
         protected IPathwayResultConverter PathwayResultConverter;
         protected IIndustryPlacementStatusConverter IndustryPlacementStatusConverter;
 
@@ -110,13 +113,14 @@ namespace Sfa.Tl.ResultsAndCertification.IntegrationTests.Services.OverallResult
                 var overallGradeLookupRepository = new GenericRepository<OverallGradeLookup>(OverallGradeLookupLogger, DbContext);
                 OverallGradeStrategyFactory = new OverallGradeStrategyFactory(overallGradeLookupRepository);
 
-                var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(OverallResultCalculationMapper).Assembly));
+                LoggerFactory = Substitute.For<ILoggerFactory>();
+                var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(OverallResultCalculationMapper).Assembly), LoggerFactory);
                 Mapper = new Mapper(mapperConfig);
 
                 PathwayResultConverter = new PathwayResultConverter();
                 IndustryPlacementStatusConverter = new IndustryPlacementStatusConverter();
 
-                // Create Service class to test. 
+                // Create Service class to test.
                 OverallResultCalculationService = new OverallResultCalculationService(ResultsAndCertificationConfiguration, TlLookupRepository, OverallResultCalculationRepository, AssessmentSeriesRepository, OverallResultRepository, SpecialismResultStrategyFactory, OverallGradeStrategyFactory, Mapper, PathwayResultConverter, IndustryPlacementStatusConverter);
             }
         }
@@ -270,7 +274,6 @@ namespace Sfa.Tl.ResultsAndCertification.IntegrationTests.Services.OverallResult
             return tqSpecialismResults;
         }
 
-
         public List<OverallResult> SeedOverallResultData(List<TqRegistrationProfile> registrations, List<long> ulnsWithOverallResult, bool saveChanges = true)
         {
             var overallResults = new List<OverallResult>();
@@ -342,7 +345,6 @@ namespace Sfa.Tl.ResultsAndCertification.IntegrationTests.Services.OverallResult
                     tqSpecialismAssessment.EndDate = DateTime.UtcNow;
                 }
                 tqSpecialismAssessments.Add(tqSpecialismAssessment);
-
             }
             return tqSpecialismAssessments;
         }

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
+using NSubstitute;
 using Respawn;
 using Sfa.Tl.ResultsAndCertification.Application.Mappers;
 using Sfa.Tl.ResultsAndCertification.Application.Services;
@@ -26,6 +27,7 @@ namespace Sfa.Tl.ResultsAndCertification.IntegrationTests.Services.ResultService
     {
         //public long Uln;
         public List<long> Ulns;
+
         protected IList<TlProvider> TlProviders;
         public IList<TqProvider> TqProviders;
         protected IList<TlSpecialism> TlSpecialisms;
@@ -58,6 +60,7 @@ namespace Sfa.Tl.ResultsAndCertification.IntegrationTests.Services.ResultService
         protected IList<TlLookup> PathwayComponentGrades;
         protected IList<TlLookup> SpecialismComponentGrades;
         protected ILogger<ResultService> Logger;
+        protected ILoggerFactory LoggerFactory;
 
         public BulkResultsTextFixture()
         {
@@ -69,7 +72,7 @@ namespace Sfa.Tl.ResultsAndCertification.IntegrationTests.Services.ResultService
         public void Initialize()
         {
             CreateMapper();
-            // Dependencies 
+            // Dependencies
             PathwayResultRepositoryLogger = new Logger<GenericRepository<TqPathwayResult>>(new NullLoggerFactory());
             PathwayResultRepository = new GenericRepository<TqPathwayResult>(PathwayResultRepositoryLogger, DbContext);
 
@@ -92,7 +95,8 @@ namespace Sfa.Tl.ResultsAndCertification.IntegrationTests.Services.ResultService
 
         protected void CreateMapper()
         {
-            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(RegistrationMapper).Assembly));
+            LoggerFactory = Substitute.For<ILoggerFactory>();
+            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(RegistrationMapper).Assembly), LoggerFactory);
             ResultMapper = new Mapper(mapperConfig);
         }
 

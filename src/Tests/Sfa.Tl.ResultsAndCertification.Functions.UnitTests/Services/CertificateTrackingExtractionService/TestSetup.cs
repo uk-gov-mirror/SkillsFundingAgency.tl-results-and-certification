@@ -14,15 +14,15 @@ namespace Sfa.Tl.ResultsAndCertification.Functions.UnitTests.Services.Certificat
         protected IBlobStorageService BlobStorageService;
         protected IMapper Mapper;
         protected ILogger<ICertificateTrackingExtractionService> Logger;
-
         protected Functions.Services.CertificateTrackingExtractionService Service;
-
+        protected ILoggerFactory LoggerFactory;
 
         public override void Setup()
         {
             Repository = Substitute.For<ICertificateRepository>();
             BlobStorageService = Substitute.For<IBlobStorageService>();
-            Mapper = new AutoMapper.Mapper(new MapperConfiguration(c => c.AddMaps(typeof(Startup).Assembly)));
+            LoggerFactory = Substitute.For<ILoggerFactory>();
+            Mapper = new AutoMapper.Mapper(new MapperConfiguration(c => c.AddMaps(typeof(Startup).Assembly), LoggerFactory));
             Logger = Substitute.For<ILogger<ICertificateTrackingExtractionService>>();
 
             Service = new Functions.Services.CertificateTrackingExtractionService(Repository, BlobStorageService, Mapper, Logger);

@@ -40,6 +40,7 @@ namespace Sfa.Tl.ResultsAndCertification.Web
         private readonly IWebHostEnvironment _env;
 
         protected ResultsAndCertificationConfiguration ResultsAndCertificationConfiguration;
+
         public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             _config = configuration;
@@ -159,10 +160,10 @@ namespace Sfa.Tl.ResultsAndCertification.Web
                 options.AddPolicy(RolesExtensions.RequireResultsEditorAccess, policy => { policy.RequireRole(RolesExtensions.SiteAdministrator, RolesExtensions.ResultsEditor); policy.RequireClaim(CustomClaimTypes.LoginUserType, ((int)LoginUserType.AwardingOrganisation).ToString()); });
                 options.AddPolicy(RolesExtensions.RequireReviewsAndAppealsEditorAccess, policy => { policy.RequireRole(RolesExtensions.SiteAdministrator, RolesExtensions.ResultsEditor); policy.RequireClaim(CustomClaimTypes.LoginUserType, ((int)LoginUserType.AwardingOrganisation).ToString()); });
 
-                // Training Provider Access Policies                
+                // Training Provider Access Policies
                 options.AddPolicy(RolesExtensions.RequireLearnerRecordsEditorAccess, policy => { policy.RequireRole(RolesExtensions.ProviderAdministrator, RolesExtensions.LearnerRecordsEditor); policy.RequireClaim(CustomClaimTypes.LoginUserType, ((int)LoginUserType.TrainingProvider).ToString()); });
 
-                // Admin Dashboard Access Policies                
+                // Admin Dashboard Access Policies
                 options.AddPolicy(RolesExtensions.RequireAdminDashboardAccess, policy => { policy.RequireRole(RolesExtensions.AdminDashboardAccess); policy.RequireClaim(CustomClaimTypes.LoginUserType, ((int)LoginUserType.Admin).ToString()); });
 
                 options.AddPolicy(RolesExtensions.RequireProviderEditorOrAdminDashboardAccess,
@@ -218,7 +219,7 @@ namespace Sfa.Tl.ResultsAndCertification.Web
 
         private static void RegisterDependencies(IServiceCollection services)
         {
-            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            services.AddAutoMapper(cfg => { }, AppDomain.CurrentDomain.GetAssemblies());
             services.AddSingleton<IWebConfigurationService, WebConfigurationService>();
             services.AddTransient<IBlobStorageService, BlobStorageService>();
             services.AddTransient<ITlevelLoader, TlevelLoader>();

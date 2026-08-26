@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
+using NSubstitute;
 using Sfa.Tl.ResultsAndCertification.Application.Mappers;
 using Sfa.Tl.ResultsAndCertification.Application.Services;
 using Sfa.Tl.ResultsAndCertification.Common.Enum;
@@ -21,6 +23,7 @@ namespace Sfa.Tl.ResultsAndCertification.IntegrationTests.Services.IndustryPlace
 
         // Data Seed variables
         protected TlAwardingOrganisation TlAwardingOrganisation;
+
         protected TlRoute Route;
         protected TlPathway Pathway;
         protected TlSpecialism Specialism;
@@ -35,23 +38,25 @@ namespace Sfa.Tl.ResultsAndCertification.IntegrationTests.Services.IndustryPlace
 
         protected IndustryPlacementService IndustryPlacementService;
         protected IRepository<IpLookup> IpLookupRepository;
-        protected IRepository<IndustryPlacement> IndustryPlacementRepository;        
+        protected IRepository<IndustryPlacement> IndustryPlacementRepository;
         protected IRepository<TqRegistrationPathway> RegistrationPathwayRepository;
 
-        
         protected IMapper Mapper;
         protected IList<IpLookup> IpLookup;
 
-        
         // Dependencies
         protected ILogger<GenericRepository<IpLookup>> IpLookupRepositoryLogger;
+
         protected ILogger<GenericRepository<IndustryPlacement>> IndustryPlacementLogger;
         protected ILogger<GenericRepository<TqRegistrationPathway>> RegistrationPathwayRepositoryLogger;
         protected ILogger<IndustryPlacementService> IndustryPlacementServiceLogger;
 
+        protected ILoggerFactory LoggerFactory;
+
         protected virtual void CreateMapper()
         {
-            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(IndustryPlacementMapper).Assembly));
+            LoggerFactory = Substitute.For<ILoggerFactory>();
+            var mapperConfig = new MapperConfiguration(c => c.AddMaps(typeof(IndustryPlacementMapper).Assembly), LoggerFactory);
             Mapper = new Mapper(mapperConfig);
         }
 
@@ -68,6 +73,7 @@ namespace Sfa.Tl.ResultsAndCertification.IntegrationTests.Services.IndustryPlace
 
             DbContext.SaveChanges();
         }
+
         public List<TqRegistrationProfile> SeedRegistrationsData(Dictionary<long, RegistrationPathwayStatus> ulns, TqProvider tqProvider = null)
         {
             var profiles = new List<TqRegistrationProfile>();
@@ -97,7 +103,6 @@ namespace Sfa.Tl.ResultsAndCertification.IntegrationTests.Services.IndustryPlace
             DbContext.SaveChanges();
             return profile;
         }
-
 
         public void SeedIpLookupData()
         {
