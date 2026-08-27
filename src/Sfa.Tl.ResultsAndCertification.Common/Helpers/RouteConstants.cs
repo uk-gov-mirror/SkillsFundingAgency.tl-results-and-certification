@@ -638,6 +638,8 @@
         public const string SubmitAdminEditNotification = "SubmitAdminEditNotification";
         public const string AdminAddNotification = "AdminAddNotification";
         public const string SubmitAdminAddNotification = "SubmitAdminAddNotification";
+        public const string AdminDeleteNotification = "AdminDeleteNotification";
+        public const string SubmitAdminDeleteNotification = "SubmitAdminDeleteNotification";
 
         #endregion
 

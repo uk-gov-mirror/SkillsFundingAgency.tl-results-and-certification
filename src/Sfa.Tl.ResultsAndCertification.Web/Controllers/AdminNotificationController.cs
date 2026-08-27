@@ -67,6 +67,8 @@ namespace Sfa.Tl.ResultsAndCertification.Web.Controllers
             searchCriteria.PageNumber = pageNumber;
 
             viewModel = await _loader.SearchNotificationAsync(searchCriteria);
+            viewModel.SuccessBanner = await _cacheService.GetAndRemoveAsync<NotificationBannerModel>(NotificationCacheKey);
+
             return View(viewModel);
         }
 
@@ -118,6 +120,7 @@ namespace Sfa.Tl.ResultsAndCertification.Web.Controllers
             }
 
             viewModel.SuccessBanner = await _cacheService.GetAndRemoveAsync<NotificationBannerModel>(NotificationCacheKey);
+
             return View(viewModel);
         }
 
@@ -190,6 +193,37 @@ namespace Sfa.Tl.ResultsAndCertification.Web.Controllers
             await _cacheService.SetAsync<NotificationBannerModel>(NotificationCacheKey, notificationBanner, CacheExpiryTime.XSmall);
 
             return RedirectToRoute(RouteConstants.AdminNotificationDetails, new { notificationId = response.NotificationId });
+        }
+
+        [HttpGet]
+        [Route("admin/delete-notification/{notificationId}", Name = RouteConstants.AdminDeleteNotification)]
+        public async Task<IActionResult> AdminDeleteNotificationAsync(int notificationId)
+        {
+            AdminDeleteNotificationViewModel viewModel = await _loader.GetDeleteNotificationViewModel(notificationId);
+
+            if (viewModel == null)
+            {
+                return RedirectToRoute(RouteConstants.ProblemWithService);
+            }
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [Route("admin/delete-notification", Name = RouteConstants.SubmitAdminDeleteNotification)]
+        public async Task<IActionResult> AdminDeleteNotificationAsync(AdminDeleteNotificationViewModel viewModel)
+        {
+            DeleteNotificationResponse response = await _loader.SubmitDeleteNotificationRequest(viewModel);
+
+            if (!response.Success)
+            {
+                return RedirectToRoute(RouteConstants.ProblemWithService);
+            }
+
+            var notificationBanner = new AdminNotificationBannerModel(AdminDeleteNotification.Message_Notification_Deleted);
+            await _cacheService.SetAsync<NotificationBannerModel>(NotificationCacheKey, notificationBanner, CacheExpiryTime.XSmall);
+
+            return RedirectToRoute(RouteConstants.AdminFindNotification);
         }
 
         private static ValidationResult ValidateNotificationBaseViewModel(AdminNotificationBaseViewModel viewModel)

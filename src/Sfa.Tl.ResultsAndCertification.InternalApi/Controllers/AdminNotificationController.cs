@@ -37,5 +37,10 @@ namespace Sfa.Tl.ResultsAndCertification.InternalApi.Controllers
         [Route("UpdateNotification")]
         public Task<bool> UpdateBannerAsync(UpdateNotificationRequest request)
             => _adminNotificationService.UpdateNotificationAsync(request, () => DateTime.UtcNow);
+
+        [HttpDelete]
+        [Route("DeleteNotification/{notificationId}")]
+        public Task<DeleteNotificationResponse> DeleteBannerAsync(int notificationId)
+            => _adminNotificationService.DeleteNotificationAsync(notificationId);
     }
 }

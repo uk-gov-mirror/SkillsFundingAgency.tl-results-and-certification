@@ -101,7 +101,15 @@ USING (VALUES
 	(95, N'ZTLOS080', N'Assisting Teaching', 27, 1),
 	(96, N'ZTLOS088', N'Heating Engineering and Ventilation', 22, 1),
 	(97, N'ZTLOS096', N'Project Delivery for Construction and the Built Environment', 23, 1),
-	(98, N'ZTLOS078', N'Marketing Assistant (Multi-Channel)', 28, 1)
+	(98, N'ZTLOS078', N'Marketing Assistant (Multi-Channel)', 28, 1),
+	(99, N'ZTLOS097', N'Low Carbon Heating Engineering', 22, 1),
+	(100, N'ZTLOS103', N'Technical: Food Sciences', 29, 1),
+	(101, N'ZTLOS104', N'Technical: Laboratory Sciences', 29, 1),
+	(102, 'ZTLOS098' ,N'Supporting Healthcare - Supporting the Adult Nursing Team', 30, 1),
+	(103, 'ZTLOS101' ,N'Supporting Healthcare - Supporting the Care of Children and Young People', 30, 1),
+	(104, 'ZTLOS100' ,N'Supporting Healthcare - Supporting the Mental Health Team', 30, 1),
+	(105, 'ZTLOS099' ,N'Supporting Healthcare - Supporting the Midwifery Team', 30, 1),
+	(106, 'ZTLOS102' ,N'Supporting Healthcare - Supporting the Therapy Teams', 30, 1)
   )
   AS Source ([Id], [LarId], [Name], [TlPathwayId], [IsActive]) 
 ON Target.[Id] = Source.[Id] 

@@ -86,6 +86,11 @@
 		  <DesignTime>True</DesignTime>
 		  <AutoGen>True</AutoGen>
 		</Compile>
+		<Compile Update="Content\AdminNotification\AdminDeleteNotification.Designer.cs">
+		  <DependentUpon>AdminDeleteNotification.resx</DependentUpon>
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		</Compile>
 		<Compile Update="Content\AdminNotification\AdminNotificationBase.Designer.cs">
 		  <DependentUpon>AdminNotificationBase.resx</DependentUpon>
 		  <DesignTime>True</DesignTime>
@@ -1425,6 +1430,10 @@
 		</EmbeddedResource>
 		<EmbeddedResource Update="Content\AdminDownloadLearnerResults\AdminDownloadLearnerResultsByProvider.resx">
 		  <LastGenOutput>AdminDownloadLearnerResultsByProvider.Designer.cs</LastGenOutput>
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Content\AdminNotification\AdminDeleteNotification.resx">
+		  <LastGenOutput>AdminDeleteNotification.Designer.cs</LastGenOutput>
 		  <Generator>PublicResXFileCodeGenerator</Generator>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Content\AdminNotification\AdminNotificationBase.resx">

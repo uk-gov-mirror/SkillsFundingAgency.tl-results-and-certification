@@ -676,6 +676,12 @@ namespace Sfa.Tl.ResultsAndCertification.Api.Client.Clients
         public Task<bool> UpdateNotificationAsync(UpdateNotificationRequest request)
             => PutAsync<UpdateNotificationRequest, bool>(ApiConstants.UpdateNotification, request);
 
+        public async Task<DeleteNotificationResponse> DeleteNotificationAsync(int notificationId)
+        {
+            var requestUri = string.Format(ApiConstants.DeleteNotification, notificationId);
+            return await DeleteAsync<DeleteNotificationResponse>(requestUri);
+        }
+
         #endregion
 
         #region Admin Assessment Series Dates
