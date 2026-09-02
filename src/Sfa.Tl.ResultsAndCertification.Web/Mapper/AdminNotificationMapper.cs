@@ -60,6 +60,13 @@ namespace Sfa.Tl.ResultsAndCertification.Web.Mapper
                 .ForMember(d => d.EndMonth, opts => opts.MapFrom(s => s.End.Month.ToString()))
                 .ForMember(d => d.EndYear, opts => opts.MapFrom(s => s.End.Year.ToString()));
 
+            CreateMap<GetNotificationResponse, AdminDeleteNotificationViewModel>()
+                .ForMember(d => d.NotificationId, opts => opts.MapFrom(s => s.Id))
+                .ForMember(d => d.Title, opts => opts.MapFrom(s => s.Title));
+
+            CreateMap<AdminDeleteNotificationViewModel, DeleteNotificationRequest>()
+                .ForMember(d => d.NotificationId, opts => opts.MapFrom(s => s.NotificationId));
+
             CreateMap<AdminEditNotificationViewModel, UpdateNotificationRequest>()
                 .ForMember(d => d.NotificationId, opts => opts.MapFrom(s => s.NotificationId))
                 .ForMember(d => d.Title, opts => opts.MapFrom(s => s.Title))

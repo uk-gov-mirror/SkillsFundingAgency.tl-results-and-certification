@@ -33,7 +33,9 @@ USING (VALUES
   (25, N'61058014', N'T Level in Digital Software Development' ,N'Digital Software Development', 2025, 3),
   (26, N'6105799X', N'T Level in Digital Support and Security' ,N'Digital Support and Security', 2025, 3),
   (27, N'61057484', N'T Level in Education and Early Years' ,N'Education and Early Years', 2025, 2),
-  (28, N'61051251', N'T Level in Marketing', N'Marketing', 2025, 10)
+  (28, N'61051251', N'T Level in Marketing', N'Marketing', 2025, 10),
+  (29, N'61074391', N'T Level in Science', N'Science', 2026, 4),
+  (30, N'6107438X', N'T Level in Health', N'Health', 2026, 4)
   )
   AS Source ([Id], [LarId], [TlevelTitle], [Name], [StartYear], [TlRouteId]) 
 ON Target.[Id] = Source.[Id] 
